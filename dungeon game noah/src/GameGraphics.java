@@ -17,11 +17,11 @@ public class GameGraphics {
     BufferedImage door;
     BufferedImage bed;
     File pUpFile;
-    File playerFile = new File("src/PrisonerSprite.png");
-    File PWallFile = new File("src/PrisonWall.png");
-    File bedFile = new File("src/Bed.png");
-    File sinkFile = new File("src/Sink.png");
-    File doorFile = new File("src/PrisonDoor.png");
+    File playerFile = new File("dungeon game noah/src/PrisonerSprite.png");
+    File PWallFile = new File("dungeon game noah/src/PrisonWall.png");
+    File bedFile = new File("dungeon game noah/src/Bed.png");
+    File sinkFile = new File("dungeon game noah/src/Sink.png");
+    File doorFile = new File("dungeon game noah/src/PrisonDoor.png");
 
     private int cellSize = 15;
 
