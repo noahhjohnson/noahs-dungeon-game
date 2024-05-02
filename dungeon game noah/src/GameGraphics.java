@@ -9,6 +9,7 @@ import java.io.IOException;
 public class GameGraphics {
     JFrame frame;
     JPanel panel;
+    JLabel label = new JLabel("Hello World!");
     BufferedImage pUp;
     BufferedImage PrisonerSprite;
     BufferedImage player;
@@ -16,7 +17,9 @@ public class GameGraphics {
     BufferedImage sink;
     BufferedImage door;
     BufferedImage bed;
+    BufferedImage floor;
     File pUpFile;
+    File PrisonFloorFile = new File("dungeon game noah/src/PrisonFloorTiles.png");
     File playerFile = new File("dungeon game noah/src/PrisonerSprite.png");
     File PWallFile = new File("dungeon game noah/src/PrisonWall.png");
     File bedFile = new File("dungeon game noah/src/Bed.png");
@@ -35,6 +38,13 @@ public class GameGraphics {
         door = ImageIO.read(doorFile);
         bed = ImageIO.read(bedFile);
         sink = ImageIO.read(sinkFile);
+        floor = ImageIO.read(PrisonFloorFile);
+
+        for(int i = 0; i< Map.mapRep.length; i++) {
+            for (int j = 0; j < Map.mapRep.length; j++) {
+            g.drawImage(floor, j*blockSize, i*blockSize, blockSize, blockSize,null);
+            }
+        }
         for(int i = 0; i< Map.mapRep.length; i++){
             for(int j = 0; j< Map.mapRep.length; j++){
                 if(Map.mapRep[j][i].equals("W ")){
@@ -58,6 +68,7 @@ public class GameGraphics {
     public void start() throws IOException {
         frame =  new JFrame("DungeonGame");
         frame.setVisible(true);
+        label.setBounds(0,500, 100,100);
         panel = new JPanel(){
             @Override
             protected void paintComponent(Graphics g){
@@ -70,13 +81,18 @@ public class GameGraphics {
                 panel.repaint();
             }
         };
+        panel.add(label);
         JButton button = new JButton();
         button.setBounds(0,0,cellSize, cellSize);
 
+
+        panel.setPreferredSize(new Dimension(300,200));
         frame.add(panel);
-        panel.setLocation(800, 0);
+        panel.setBackground(new Color(255,0,0));
         frame.setBounds(0,0,800,800);
         //frame.add(button);
+        frame.pack();
+
 
 
     }
