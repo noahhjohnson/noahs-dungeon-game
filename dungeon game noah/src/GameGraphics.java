@@ -23,9 +23,13 @@ public class GameGraphics {
     File sinkFile = new File("dungeon game noah/src/Sink.png");
     File doorFile = new File("dungeon game noah/src/PrisonDoor.png");
 
+    private int blockSize = 160;
     private int cellSize = 15;
 
     public void drawMap(Graphics g) throws IOException {
+        if (Map.map==2){
+            blockSize =40;
+        }
         prisonWall = ImageIO.read(PWallFile);
         player = ImageIO.read(playerFile);
         door = ImageIO.read(doorFile);
@@ -34,19 +38,19 @@ public class GameGraphics {
         for(int i = 0; i< Map.mapRep.length; i++){
             for(int j = 0; j< Map.mapRep.length; j++){
                 if(Map.mapRep[j][i].equals("W ")){
-                    g.drawImage(prisonWall, j*160,i*160, 160, 160,null);
+                    g.drawImage(prisonWall, j*blockSize,i*blockSize, blockSize, blockSize,null);
                 }
                 if (Map.mapRep[j][i].equals("\ud83d\udecf\ufe0f ")) {
-                    g.drawImage(bed, j*160,i*160,160,160, null);
+                    g.drawImage(bed, j*blockSize,i*blockSize,blockSize,blockSize, null);
                 }
                 if (Map.mapRep[j][i].equals("\ud83d\udebf")) {
-                    g.drawImage(sink, (j*160)-(j*6), (i*160)-(i*6), 200,200, null);
+                    g.drawImage(sink, (j*blockSize)-(j*6), (i*blockSize)-(i*6), 200,200, null);
                 }
                 if (Map.mapRep[j][i].equals("\uD83D\udeaa")) {
-                    g.drawImage(door, j*160,i*160, 160,160, null);
+                    g.drawImage(door, j*blockSize,i*blockSize, blockSize,blockSize, null);
                 }
             }
-            g.drawImage(player, Main.p.x*160, Main.p.y*160, 160,160, null);
+            g.drawImage(player, Main.p.x*blockSize, Main.p.y*blockSize, blockSize,blockSize, null);
         }
 
     }
