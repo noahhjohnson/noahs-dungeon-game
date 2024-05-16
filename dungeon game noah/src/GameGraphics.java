@@ -8,7 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GameGraphics implements KeyListener {
+public class GameGraphics {
+
+    private boolean isInteract = false;
+
     JFrame frame;
     JPanel panel;
     JLabel label = new JLabel(Main.p.x + " " + Main.p.y);
@@ -82,17 +85,17 @@ public class GameGraphics implements KeyListener {
                 super.paintComponent(g);
                 try {
                     drawMap(g);
+                    if(isInteract){
+                        g.fillRect(100,100,100,100);
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 label.setText(Main.p.x + " " + Main.p.y);
                 label2.setText("<html> [Backstory]: You are a thief that has attempted to steal coins and you got caught. You are now serving time in prison. <br/> You have a friend, Doug who is a Prison Guard, he wants you to turn your life around. </html>");
                 label3.setText("<html> [Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. <br/> I'm wondering if a theif like you would even consider the position. </html>");
-                panel.repaint();
             }
         };
-
-        panel.setBackground(Color.green);
 
         panel.add(label);
         panel.add(label2);
@@ -100,29 +103,53 @@ public class GameGraphics implements KeyListener {
         label.setBounds(1550, 2, 100, 100);
         label2.setBounds(850, 15, 7000, 100);
         label3.setBounds(850, 50, 7000, 100);
-        JButton button = new JButton();
-        button.setBounds(0, 0, cellSize, cellSize);
-
-        panel.setFocusable(true);
-        panel.addKeyListener(this); // Registering the KeyListener
-        panel.requestFocusInWindow(); // Setting focus on the panel
 
         panel.setPreferredSize(new Dimension(300, 200));
         frame.add(panel);
         frame.pack();
-    }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
+        // Adding KeyListener to the panel
+        panel.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        panel.setBackground(Color.red);
-        
-    }
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("s", Main.p);
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+                }
+                if (e.getKeyCode() == KeyEvent.VK_W) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("w", Main.p);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_A) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("a", Main.p);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_D) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("d", Main.p);
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_E) {
+                    // Your logic for key pressed
+                    isInteract = true;
+                }
+
+                panel.repaint();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+
+        // Setting focus on the panel
+        panel.setFocusable(true);
+        panel.requestFocusInWindow();
     }
 }
+
