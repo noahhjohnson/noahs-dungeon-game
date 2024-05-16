@@ -1,13 +1,24 @@
 
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Scanner;
 
 class Main {
 
     public static boolean printFirstSeperator = false;
-    public static GameGraphics UI = new GameGraphics();
     public static Player p = new Player();
+    public static GameGraphics UI;
+
+    static {
+        try {
+            UI = new GameGraphics();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (FontFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static Map m = new Map(5, 5); // Assign map as a public field rather than an internal map variable
     public static void clearScreen(){
