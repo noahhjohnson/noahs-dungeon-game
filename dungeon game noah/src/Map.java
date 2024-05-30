@@ -1,36 +1,22 @@
-
-
 import java.io.IOException;
-import java.util.Scanner;
 
-class Main {
+public class Map{
+    public static String [][] mapRep;
+    public String day;
+    public int hour;
+    public static int map = 1;
+    public static int offsetx;
+    public static int offsety;
 
-    public static boolean printFirstSeperator = false;
-    public static GameGraphics UI = new GameGraphics();
-    public static Player p = new Player();
+    public static String hint1 = "Hint: Check the trashcans for items you can offer to the guard.";
 
-    public static Map m = new Map(5, 5); // Assign map as a public field rather than an internal map variable
-    public static void clearScreen(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+
+    public Map (int x, int y){
+        offsetx = offsety = 0;
+        mapRep = new String [x][y];
+        day = "Sunday";
+        hour = 21;
     }
-
-    public static void main(String[] args) throws IOException {
-        m.createMapOne(); //Call create map one before we create level one
-        UI.start();
-        levelOne();
-
-
-
-    }
-    public static String bold(){
-        return"\033[0;1m";
-    }
-
-    public static String unbold(){
-        return "\033[0m";
-    }
-
     public static String italic(){
         return "\033[3m";
 
@@ -41,101 +27,245 @@ class Main {
 
     }
 
-    public static String colorString(String text, int red, int green, int blue){
-        String rgbEscapeCode = String.format("\u001B[38;2;%d;%d;%dm", red, green, blue);
-        String resetColor = "\u001B[0m";
-        return rgbEscapeCode + text + resetColor;
+    public static String bold(){
+        return"\033[0;1m";
 
     }
 
-    public static String colorChar(char text, int red, int green, int blue){
-        String rgbEscapeCode = String.format("\u001B[38;2;%d;%d;%dm", red, green, blue);
-        String resetColor = "\u001B[0m";
-        return rgbEscapeCode + text + resetColor;
+    public static String unbold(){
+        return "\033[0m";
+
+    }
+    public static int getWidth(){
+        return mapRep[0].length;
     }
 
+    public static int getLength(){
+        return mapRep.length;
+    }
 
-    private static void levelOne() throws IOException {
-        String response1;
-        Scanner input = new Scanner(System.in);
-
-        p = new Player();
-        String startingMessage = "[Backstory]: You are a thief that has attempted to steal coins and you got caught. You are now serving time in prison. You have a friend, Doug who is a Prison Guard, he wants you to turn your life around. \n"+bold()+"[Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. I'm wondering if a theif like you would even consider the position."+unbold()+" \n You have 3 lives, 100 health, and you are 25% liked! \n";
-        System.out.println("--------------------------------------------");
-        System.out.println(startingMessage);
-
-        while(true){
-            String expectedInput = "Type Y and press enter to say \"Yes\" \n Type N and press enter to say \"No\" \n Type I and press enter \"Ignore\" ";
-            System.out.println(expectedInput);
-            response1 = input.nextLine();
-            BasicCommands.movement(response1, p);
-            if (response1.equals("Y")||response1.equals("y")){
-                System.out.println(bold()+" [Doug]: Good! You can start on Monday."+unbold());
-
-
-                p.likability +=10;
-                System.out.println(italic()+ "Game: You gained 10% likability for taking the job!"+unitalic());
-                System.out.println(italic()+" Game: Navgiate to your new job shown on the map."+unitalic());
-                System.out.println("----------------------------------------");
-                clearScreen();
-                m.visual();
-                break;
-            }
-            else if (response1.equals("N")||response1.equals("n")){
-                System.out.println(bold()+"[Doug]: You're never gonna get anywhere in life."+unbold());
-                p.likability -=10;
-                System.out.println(italic()+ "Game: You lost 10% likability for being bad friend!"+unitalic());
-                System.out.println(italic()+"Game: Navgiate to your bed and get some rest."+unitalic());
-                System.out.println("----------------------------------------");
-                clearScreen();
-                m.visual();
-                break;
-            }
-            else if (response1.equals("I")||response1.equals("i")){
-                System.out.println(bold()+"[Doug]: Givin' me the silent treatment huh?"+unbold());
-                p.likability -=10;
-                System.out.println(italic()+ "Game: You lost 10% likability for ignoring your friend!" +unitalic());
-                System.out.println(italic()+ "Game: Navgiate to your bed and get some rest." +unitalic());
-                System.out.println("----------------------------------------");
-                clearScreen();
-                m.visual();
-                break;
-            }
-            else if (response1.equals("s")||response1.equals("S")){
-                p.stats();
-            }else{
+    public void visual(){
+        //if(Main.printFirstSeperator)System.out.println("----------------------");
+        Main.clearScreen();
+        for(int y = 0; y<= getLength()-1;y++){
+            for(int x = 0; x<=getWidth()-1;x++){
+                System.out.print(mapRep[x][y]);
 
             }
+            if(y==0)System.out.print("  "+Main.p.x+" "+Main.p.y);
+            if(y==1)System.out.print("  S = Sink");
+            if(y==2)System.out.print("  B = Bed");
+            if(y==3)System.out.print("  D = Door");
+            if(y==4)System.out.print("  W = Wall");
+            if(y==5)System.out.print("  P = Player");
+            if(y==6)System.out.print("  T = Table");
+            if(y==7)System.out.print("  G = Guard");
+            if(y==8)System.out.print("  I = Inmate");
+            if(y==9)System.out.print("  ");
+            if(y==10)System.out.print("  " + Main.p.colorHealth());
+            if(y==11)System.out.print("  " + Main.p.colorLives());
+            if(y==16)System.out.print("  "+hint1);
+            if(y==20)System.out.print("  Inventory:");
+
+
+
+            System.out.println();
+
         }
-        System.out.println("You can press \"Q\" to check game controls anytime during the game.");
-        BasicCommands.canMove = true;
-        while(true){
+        System.out.println("---------------");
+        Main.printFirstSeperator = true;
+    }
 
-            response1 = input.nextLine();
-            BasicCommands.getCommands(response1);
-            BasicCommands.movement(response1, p);
-            clearScreen();
-            m.visual();
-            if(response1.equals("e") || response1.equals("E")){
-                while(true){
-
-                    BasicCommands.checkItemsNearMe(p);
-                    response1 = input.nextLine();
-                    if(!response1.equals("1") && !response1.equals("2") && !response1.equals("3") && !response1.equals("4")){
-                        System.out.println("Invalid Input. Type a number between 1 and 4.");
-                    }
-                    else{
-                        break;
+    public void createMapOne() throws IOException {
+        for(int y = 0; y<=getLength()-1;y++){
+            for(int x = 0; x<=getWidth()-1;x++){
+                if(x==0||y==0|| x==getWidth()-1|| y==getLength()-1){
+                    mapRep[x][y]="W ";
+                    if(x==2 && y==4){
+                        mapRep[x][y]=Main.colorString("D", 255,255,0);
                     }
                 }
-                BasicCommands.interactInput(response1, p, m);
+                else if(x==2 && y==2){
+                    mapRep[x][y]=Main.colorString("P ", 121,251,255);
+                }
+                else mapRep[x][y]=". ";
             }
+        }
+        emojiPlacerOne();
 
 
+    }
+    public void createMapTwo(Player p){
+        map++;
+        p.x+=8;
+        mapRep = new String[20][20];
+        for(int y = 0; y<=getWidth()-1;y++){
+            for(int x = 0; x<=getLength()-1;x++){
+                if(x==0+8||x==12||y==0|| x==getWidth()-1|| y==4){
+                    if(y<=4){
+                        mapRep[x][y]="W ";
+                    }
+                    else{
+                        mapRep[x][y] = ". ";
+                    }
+                    if(x==2+8 && y==4){
+                        mapRep[x][y]="D";
+                    }
+
+                }
+                else if(x==1+8 && y==1){
+                    mapRep[x][y]="\ud83d\udecf\ufe0f";
+                }
+                else if(x==3+8 && y==1){
+                    mapRep[x][y]=Main.colorString("S", 255,255,0);
+                }
+                else mapRep[x][y]=". ";
+                mapRep[10][4]=". ";
+                mapRep[p.x][p.y] =Main.colorString("P", 121,251,255);
+                for(int i=0; i<20; i++){
+                    mapRep[i][19] = "W ";
+                }
+                for(int i=0; i<20; i++){
+                    mapRep[19][i] = "W ";
+                    mapRep[0][i] = "W ";
+                }
+                if(x==5 && y==8){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==6 && y==8){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==4 && y==8){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==13 && y==8){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==15 && y==8){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==14 && y==8){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==14 && y==12){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==13 && y==12){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==15 && y==12){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==4 && y==12){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==5 && y==12){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==6 && y==12){
+                    mapRep[x][y] = "T ";
+                }
+                if(x==5 && y==7){
+                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
+                }
+                if(x==14 && y==7){
+                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
+                }
+                if(x==14 && y==11){
+                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
+                }
+                if(x==5 && y==11){
+                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
+                }
+                if(x==14 && y==13){
+                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
+                }
+                if(x==5 && y==13){
+                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
+                }
+                if(x==18 && y==5){
+                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
+                }
+                if(x==2 && y==16){
+                    mapRep[x][y] =Main.colorString("G", 255,255,0);
+                }
+                if(x==17 && y==16){
+                    mapRep[x][y] =Main.colorString("G", 255,255,0);
+                }
+
+                mapRep[0][10]=Main.colorString("D", 255,255,0);
+                emojiPlacerTwo();
+            }
         }
     }
-    public void Instructions(){
-        System.out.println("Use W,A,S,D keys to naviagate around.");
-        System.out.println("You have an inventory, move around to find what to do next.");
+    public void createMapThree(Player p){
+        map++;
+        String[][] placeHolder = mapRep;
+        mapRep = new String[40][40];
+        offsetx = 20;
+        System.out.println(getLength()+" "+getWidth());
+        for(int y = 0; y<=getLength()-1;y++){
+            for(int x = 0; x<=getWidth()-1;x++){
+                mapRep[x][y] = ". ";
+            }
+            System.out.print(y+" ");
+        }
+        place2DArray(placeHolder, mapRep, 0, 20);
+
+        p.x = 21;
+        p.y = 10;
+        mapRep[20][10]=". ";
+        mapRep[21][10]= Main.colorString("P ", 0,255,255);
+        emojiPlacerThree();
+        for(int i = 0; i<=39; i++){
+            mapRep[0][i] = "W ";
+            mapRep[39][i] = "W ";
+        }
+        for(int i = 0; i<=39; i++){
+            mapRep[i][0] = "W ";
+            mapRep[i][19] = "W ";
+            mapRep[i][39] = "W ";
+        }
+    }
+
+    public static String[][] place2DArray(String[][] smallerArr, String[][] largerArr, int x, int y){
+        for(int i=y; i<=y+smallerArr.length-1; i++){
+            for(int j=x; j<=x+smallerArr.length-1; j++){
+                largerArr[i][j] = smallerArr[i-y][j-x];
+            }
+        }
+        return largerArr;
+    }
+    public static void emojiPlacerThree(){
+
+        Box btopRight = new Box(14,3);
+        Box btopLeft = new Box(5,3);
+        Box bbottomRight = new Box(15,14);
+        mapRep[5][14] = "\ud83d\udc6e"; // Police Officer
+        mapRep[11][19] = "\ud83d\udeaa"; // Door
+        mapRep[4][14] = "\ud83d\udd11"; // Key
+    }
+    public static void emojiPlacerTwo(){
+
+
+        mapRep[0][10] = "\ud83d\udeaa"; // Door
+        mapRep[11][1] = "\ud83d\udebf "; // Sink
+        mapRep[17][16] = "\ud83d\udc6e"; // Police Officer
+        mapRep[2][16] = "\ud83d\udc6e"; // Police Officer
+        mapRep[5][7] = "\ud83d\ude4d";  // Inmate
+        mapRep[14][7] = "\ud83d\ude4d"; // Inmate
+        mapRep[14][11] = "\ud83d\ude4d"; // Inmate
+        mapRep[14][13] = "\ud83d\ude4d"; // Inmate
+        mapRep[5][13] = "\ud83d\ude4d"; // Inmate
+        mapRep[5][11] = "\ud83d\ude4d"; // Inmate
+        mapRep[18][5] = "\ud83d\ude4d"; // Inmate
+    }
+    public static void emojiPlacerOne(){
+
+        mapRep[2][4] = "\uD83D\udeaa"; // Door
+        mapRep[3][1] = "\ud83d\udebf"; // Sink
+        mapRep[1][1] = "\ud83d\udecf\ufe0f "; // Bed
+
+
     }
 }
