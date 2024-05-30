@@ -12,6 +12,7 @@ public class GameGraphics {
 
     private boolean isInteract = false;
 
+    Color green = new Color(0,255,0, 65);
     JFrame frame;
     JPanel panel;
     JLabel label = new JLabel(Main.p.x + " " + Main.p.y);
@@ -86,7 +87,11 @@ public class GameGraphics {
                 try {
                     drawMap(g);
                     if(isInteract){
-                        g.fillRect(100,100,100,100);
+                        g.setColor(green);
+                        g.fillRect(Main.p.x * blockSize,(Main.p.y * blockSize) - blockSize, blockSize, blockSize);
+                        g.fillRect(Main.p.x * blockSize,(Main.p.y * blockSize) + blockSize, blockSize, blockSize);
+                        g.fillRect((Main.p.x * blockSize) - blockSize, (Main.p.y * blockSize), blockSize, blockSize);
+                        g.fillRect((Main.p.x * blockSize) + blockSize, (Main.p.y * blockSize), blockSize, blockSize);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
