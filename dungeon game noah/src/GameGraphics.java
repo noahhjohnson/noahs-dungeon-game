@@ -61,11 +61,11 @@ public class GameGraphics {
                 if (Map.mapRep[j][i].equals("W ")) {
                     g.drawImage(prisonWall, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("\ud83d\udecf\ufe0f ")) {
+                if (Map.mapRep[j][i].equals("\ud83d\udecf️")) {
                     g.drawImage(bed, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
                 if (Map.mapRep[j][i].equals("\ud83d\udebf")) {
-                    g.drawImage(sink, (j * blockSize) - (j * 6), (i * blockSize) - (i * 6), 200, 200, null);
+                    g.drawImage(sink, (j * blockSize), (i * blockSize), blockSize, blockSize, null);
                 }
                 if (Map.mapRep[j][i].equals("\uD83D\udeaa")) {
                     g.drawImage(door, j * blockSize, i * blockSize, blockSize, blockSize, null);
