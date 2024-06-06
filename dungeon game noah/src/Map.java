@@ -249,7 +249,7 @@ public class Map{
 
 
         mapRep[0][10] = "\ud83d\udeaa"; // Door
-        mapRep[11][1] = "\ud83d\udebf "; // Sink
+        mapRep[11][1] = "\ud83d\udebf"; // Sink
         mapRep[17][16] = "\ud83d\udc6e"; // Police Officer
         mapRep[2][16] = "\ud83d\udc6e"; // Police Officer
         mapRep[5][7] = "\ud83d\ude4d";  // Inmate
@@ -264,7 +264,7 @@ public class Map{
 
         mapRep[2][4] = "\uD83D\udeaa"; // Door
         mapRep[3][1] = "\ud83d\udebf"; // Sink
-        mapRep[1][1] = "\ud83d\udecf\ufe0f "; // Bed
+        mapRep[1][1] = "\ud83d\udecf\ufe0f"; // Bed
 
 
     }
