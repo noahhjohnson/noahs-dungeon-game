@@ -26,6 +26,9 @@ public class GameGraphics {
     BufferedImage door;
     BufferedImage bed;
     BufferedImage floor;
+    BufferedImage BlackTitle;
+    BufferedImage RedTitle;
+    BufferedImage StoneBrickTitle;
     File pUpFile;
     File PrisonFloorFile = new File("dungeon game noah/src/PrisonFloorTiles.png");
     File playerFile = new File("dungeon game noah/src/PrisonerSprite.png");
@@ -33,6 +36,9 @@ public class GameGraphics {
     File bedFile = new File("dungeon game noah/src/Bed.png");
     File sinkFile = new File("dungeon game noah/src/Sink.png");
     File doorFile = new File("dungeon game noah/src/PrisonDoor.png");
+    File TitleBlackFile = new File("dungeon game noah/src/TitleBlack.png");
+    File TitleRedFile = new File("dungeon game noah/src/TitleRed.png");
+    File StoneBrickFile = new File("dungeon game noah/src/StoneBrickTitle.jpg");
 
     private int blockSize = 160;
     private int cellSize = 15;
@@ -50,6 +56,7 @@ public class GameGraphics {
         bed = ImageIO.read(bedFile);
         sink = ImageIO.read(sinkFile);
         floor = ImageIO.read(PrisonFloorFile);
+
 
         for (int i = 0; i < Map.mapRep.length; i++) {
             for (int j = 0; j < Map.mapRep.length; j++) {
@@ -76,16 +83,42 @@ public class GameGraphics {
 
     }
 
+    public void drawMainMenu(Graphics g) throws IOException {
+        RedTitle = ImageIO.read(TitleRedFile);
+        BlackTitle = ImageIO.read(TitleBlackFile);
+        StoneBrickTitle = ImageIO.read(StoneBrickFile);
+        g.setColor(new Color(61,93,46));
+        g.fillRect(0,0, 1600, 1000);
+        g.setColor(new Color(0,0,0));
+        g.drawRect(450, 70, 700, 200);
+        g.drawRect(450, 70, 700, 200);
+        g.drawRect(450, 70, 700, 200);
+        g.drawRect(450, 70, 700, 200);
+        g.drawImage(BlackTitle, 475, 105, null);
+        g.drawImage(RedTitle, 475, 110, null);
+        g.drawImage(StoneBrickTitle, 475, 110, null);
+    }
+
     public void start() throws IOException {
         frame = new JFrame("DungeonGame");
         frame.setVisible(true);
         label.setFont(new Font("Sedan", Font.PLAIN, 18));
         panel = new JPanel(null) {
+
+            int menuKnower = 0;
+
+            // 0 = Main Menu, 1 = The Game, 2  Pause Menu
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    drawMap(g);
+                    if(menuKnower == 1){
+                        drawMap(g);
+                    }
+
+                    if(menuKnower == 0){
+                        drawMainMenu(g);
+                    }
                     if(isInteract){
                         g.setColor(green);
                         g.fillRect(Main.p.x * blockSize,(Main.p.y * blockSize) - blockSize, blockSize, blockSize);
@@ -102,9 +135,9 @@ public class GameGraphics {
             }
         };
 
-        panel.add(label);
-        panel.add(label2);
-        panel.add(label3);
+        //panel.add(label);
+        //panel.add(label2);
+        //panel.add(label3);
         label.setBounds(1550, 2, 100, 100);
         label2.setBounds(850, 15, 7000, 100);
         label3.setBounds(850, 50, 7000, 100);
