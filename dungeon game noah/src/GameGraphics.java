@@ -94,9 +94,12 @@ public class GameGraphics {
         g.drawRect(450, 70, 700, 200);
         g.drawRect(450, 70, 700, 200);
         g.drawRect(450, 70, 700, 200);
+        g.drawImage(StoneBrickTitle, 450, 70, 700, 200, null);
+        g.setColor(new Color(61, 93, 46, 125));
+        g.fillRect(450, 70, 700, 200);
         g.drawImage(BlackTitle, 475, 105, null);
         g.drawImage(RedTitle, 475, 110, null);
-        g.drawImage(StoneBrickTitle, 475, 110, null);
+
     }
 
     public void start() throws IOException {
