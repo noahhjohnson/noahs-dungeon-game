@@ -29,6 +29,9 @@ public class GameGraphics {
     BufferedImage BlackTitle;
     BufferedImage RedTitle;
     BufferedImage StoneBrickTitle;
+    BufferedImage TutBlack;
+    BufferedImage TutRed;
+    BufferedImage TutBack;
     File pUpFile;
     File PrisonFloorFile = new File("dungeon game noah/src/PrisonFloorTiles.png");
     File playerFile = new File("dungeon game noah/src/PrisonerSprite.png");
@@ -39,6 +42,9 @@ public class GameGraphics {
     File TitleBlackFile = new File("dungeon game noah/src/TitleBlack.png");
     File TitleRedFile = new File("dungeon game noah/src/TitleRed.png");
     File StoneBrickFile = new File("dungeon game noah/src/StoneBrickTitle.jpg");
+    File TutBlackFile = new File("dungeon game noah/src/TutBlack.png");
+    File TutRedFile = new File("dungeon game noah/src/TutRed.png");
+    File TutBackFile = new File("dungeon game noah/src/TutBack.png");
 
     private int blockSize = 160;
     private int cellSize = 15;
@@ -87,6 +93,9 @@ public class GameGraphics {
         RedTitle = ImageIO.read(TitleRedFile);
         BlackTitle = ImageIO.read(TitleBlackFile);
         StoneBrickTitle = ImageIO.read(StoneBrickFile);
+        TutRed = ImageIO.read(TutRedFile);
+        TutBlack = ImageIO.read(TutBlackFile);
+        TutBack = ImageIO.read(TutBackFile);
         g.setColor(new Color(61,93,46));
         g.fillRect(0,0, 1600, 1000);
         g.setColor(new Color(0,0,0));
@@ -99,6 +108,12 @@ public class GameGraphics {
         g.fillRect(450, 70, 700, 200);
         g.drawImage(BlackTitle, 475, 105, null);
         g.drawImage(RedTitle, 475, 110, null);
+        g.drawImage(TutBack, 450, 375, null);
+        g.drawImage(TutBack, 710, 375, null);
+        g.drawImage(TutBack, 890, 375, null);
+        g.drawImage(TutBlack, 600, 400, null);
+        g.drawImage(TutRed, 595, 413, null);
+
 
     }
 
