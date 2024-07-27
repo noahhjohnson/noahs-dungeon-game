@@ -32,6 +32,8 @@ public class GameGraphics {
     BufferedImage TutBlack;
     BufferedImage TutRed;
     BufferedImage TutBack;
+    BufferedImage PlayBlack;
+    BufferedImage PlayRed;
     File pUpFile;
     File PrisonFloorFile = new File("dungeon game noah/src/PrisonFloorTiles.png");
     File playerFile = new File("dungeon game noah/src/PrisonerSprite.png");
@@ -45,6 +47,8 @@ public class GameGraphics {
     File TutBlackFile = new File("dungeon game noah/src/TutBlack.png");
     File TutRedFile = new File("dungeon game noah/src/TutRed.png");
     File TutBackFile = new File("dungeon game noah/src/TutBack.png");
+    File PlayBlackFile = new File("dungeon game noah/src/PlayBlack.png");
+    File PlayRedFile = new File("dungeon game noah/src/PlayRed.png");
 
     private int blockSize = 160;
     private int cellSize = 15;
