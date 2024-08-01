@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +36,7 @@ public class GameGraphics {
     BufferedImage TutBack;
     BufferedImage PlayBlack;
     BufferedImage PlayRed;
+    BufferedImage CobbleBack;
     File pUpFile;
     File PrisonFloorFile = new File("dungeon game noah/src/PrisonFloorTiles.png");
     File playerFile = new File("dungeon game noah/src/PrisonerSprite.png");
@@ -49,6 +52,7 @@ public class GameGraphics {
     File TutBackFile = new File("dungeon game noah/src/TutBack.png");
     File PlayBlackFile = new File("dungeon game noah/src/PlayBlack.png");
     File PlayRedFile = new File("dungeon game noah/src/PlayRed.png");
+    File CobbleBackFile = new File("dungeon game noah/src/CobbleBack.png");
 
     private int blockSize = 160;
     private int cellSize = 15;
@@ -100,6 +104,9 @@ public class GameGraphics {
         TutRed = ImageIO.read(TutRedFile);
         TutBlack = ImageIO.read(TutBlackFile);
         TutBack = ImageIO.read(TutBackFile);
+        PlayBlack = ImageIO.read(PlayBlackFile);
+        PlayRed = ImageIO.read(PlayRedFile);
+        CobbleBack = ImageIO.read(CobbleBackFile);
         g.setColor(new Color(61,93,46));
         g.fillRect(0,0, 1600, 1000);
         g.setColor(new Color(0,0,0));
@@ -112,11 +119,16 @@ public class GameGraphics {
         g.fillRect(450, 70, 700, 200);
         g.drawImage(BlackTitle, 475, 105, null);
         g.drawImage(RedTitle, 475, 110, null);
-        g.drawImage(TutBack, 450, 375, null);
-        g.drawImage(TutBack, 710, 375, null);
-        g.drawImage(TutBack, 890, 375, null);
-        g.drawImage(TutBlack, 600, 400, null);
-        g.drawImage(TutRed, 595, 413, null);
+        g.drawImage(TutBack, 450, 345, null);
+        g.drawImage(TutBack, 710, 345, null);
+        g.drawImage(TutBack, 890, 345, null);
+        g.drawImage(PlayBlack, 715, 368, null);
+        g.drawImage(PlayRed, 695, 383, null);
+        g.drawImage(CobbleBack, 450, 600, 260,165, null);
+        g.drawImage(CobbleBack, 710, 600, 260,165, null);
+        g.drawImage(CobbleBack, 970, 600, 180,165, null);
+        g.drawImage(TutBlack, 640, 615, null);
+        g.drawImage(TutRed, 630, 625, null);
 
 
     }
@@ -169,6 +181,39 @@ public class GameGraphics {
         frame.pack();
 
         // Adding KeyListener to the panel
+        panel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                System.out.print("X Position: ");
+                System.out.println(e.getX());
+
+                System.out.print("Y Position: ");
+                System.out.println(e.getY());
+
+                //if(e.getX()) =
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         panel.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
