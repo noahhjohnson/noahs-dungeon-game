@@ -54,6 +54,8 @@ public class GameGraphics {
     File PlayRedFile = new File("dungeon game noah/src/PlayRed.png");
     File CobbleBackFile = new File("dungeon game noah/src/CobbleBack.png");
 
+    private String mainMenuSelector = "main menu";
+
     private int blockSize = 160;
     private int cellSize = 15;
 
@@ -139,19 +141,17 @@ public class GameGraphics {
         label.setFont(new Font("Sedan", Font.PLAIN, 18));
         panel = new JPanel(null) {
 
-            int menuKnower = 0;
-
             // 0 = Main Menu, 1 = The Game, 2  Pause Menu
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    if(menuKnower == 1){
-                        drawMap(g);
+                    if(mainMenuSelector.equals("main menu")){
+                        drawMainMenu(g);
                     }
 
-                    if(menuKnower == 0){
-                        drawMainMenu(g);
+                    if(mainMenuSelector.equals("Play")){
+                        drawMap(g);
                     }
                     if(isInteract){
                         g.setColor(green);
@@ -190,7 +190,11 @@ public class GameGraphics {
 
                 System.out.print("Y Position: ");
                 System.out.println(e.getY());
-
+                if(e.getX() > 451 && e.getX() < 1148 && e.getY() > 346 && e.getY() < 553 ){
+                    System.out.println("Play");
+                    mainMenuSelector = "Play";
+                    panel.repaint();
+                }
                 //if(e.getX()) =
             }
 
