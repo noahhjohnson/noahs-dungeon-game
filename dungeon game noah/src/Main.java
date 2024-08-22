@@ -68,19 +68,19 @@ class Main {
 
     private static void levelOne() throws IOException {
         String response1;
-        Scanner input = new Scanner(System.in);
+       // Scanner input = new Scanner(System.in);
 
         p = new Player();
         String startingMessage = "[Backstory]: You are a thief that has attempted to steal coins and you got caught. You are now serving time in prison. You have a friend, Doug who is a Prison Guard, he wants you to turn your life around. \n"+bold()+"[Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. I'm wondering if a theif like you would even consider the position."+unbold()+" \n You have 3 lives, 100 health, and you are 25% liked! \n";
         System.out.println("--------------------------------------------");
         System.out.println(startingMessage);
 
-        while(true){
+        /*while(true){
             String expectedInput = "Type Y and press enter to say \"Yes\" \n Type N and press enter to say \"No\" \n Type I and press enter \"Ignore\" ";
             System.out.println(expectedInput);
-            response1 = input.nextLine();
-            BasicCommands.movement(response1, p);
-            if (response1.equals("Y")||response1.equals("y")){
+            //response1 = input.nextLine();
+            //BasicCommands.movement(response1, p);
+            //if (response1.equals("Y")||response1.equals("y")){
                 System.out.println(bold()+" [Doug]: Good! You can start on Monday."+unbold());
 
 
@@ -92,7 +92,7 @@ class Main {
                 m.visual();
                 break;
             }
-            else if (response1.equals("N")||response1.equals("n")){
+            /*else if (response1.equals("N")||response1.equals("n")){
                 System.out.println(bold()+"[Doug]: You're never gonna get anywhere in life."+unbold());
                 p.likability -=10;
                 System.out.println(italic()+ "Game: You lost 10% likability for being bad friend!"+unitalic());
@@ -101,8 +101,10 @@ class Main {
                 clearScreen();
                 m.visual();
                 break;
+
+
             }
-            else if (response1.equals("I")||response1.equals("i")){
+            /*else if (response1.equals("I")||response1.equals("i")){
                 System.out.println(bold()+"[Doug]: Givin' me the silent treatment huh?"+unbold());
                 p.likability -=10;
                 System.out.println(italic()+ "Game: You lost 10% likability for ignoring your friend!" +unitalic());
@@ -111,16 +113,19 @@ class Main {
                 clearScreen();
                 m.visual();
                 break;
+
+
             }
-            else if (response1.equals("s")||response1.equals("S")){
+            /*else if (response1.equals("s")||response1.equals("S")){
                 p.stats();
             }else{
 
-            }
-        }
+             */
+            //}
+        //}
         System.out.println("You can press \"Q\" to check game controls anytime during the game.");
         BasicCommands.canMove = true;
-        while(true){
+        /*while(true){
 
             response1 = input.nextLine();
             BasicCommands.getCommands(response1);
@@ -143,7 +148,7 @@ class Main {
             }
 
 
-        }
+        }*/
     }
     public void Instructions(){
         System.out.println("Use W,A,S,D keys to naviagate around.");
