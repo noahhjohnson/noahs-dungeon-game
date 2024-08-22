@@ -21,8 +21,7 @@ public class GameGraphics {
     JLabel label2 = new JLabel("[Backstory]: You are a thief that has \n attempted to steal coins and you got caught. You are now serving time in prison. You have a friend, Doug who is a Prison Guard, he wants you to turn your life around.");
     JLabel label3 = new JLabel("[Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. I'm wondering if a thief like you would even consider the position.");
     BufferedImage pUp;
-    BufferedImage PrisonerSprite;
-    BufferedImage player;
+    BufferedImage prisoner;
     BufferedImage prisonWall;
     BufferedImage sink;
     BufferedImage door;
@@ -39,7 +38,7 @@ public class GameGraphics {
     BufferedImage CobbleBack;
     File pUpFile;
     File PrisonFloorFile = new File("dungeon game noah/src/PrisonFloorTiles.png");
-    File playerFile = new File("dungeon game noah/src/PrisonerSprite.png");
+    File prisonerFile = new File("dungeon game noah/src/Prisoner.png");
     File PWallFile = new File("dungeon game noah/src/PrisonWall.png");
     File bedFile = new File("dungeon game noah/src/Bed.png");
     File sinkFile = new File("dungeon game noah/src/Sink.png");
@@ -67,7 +66,7 @@ public class GameGraphics {
             blockSize = 40;
         }
         prisonWall = ImageIO.read(PWallFile);
-        player = ImageIO.read(playerFile);
+        prisoner = ImageIO.read(prisonerFile);
         door = ImageIO.read(doorFile);
         bed = ImageIO.read(bedFile);
         sink = ImageIO.read(sinkFile);
@@ -94,7 +93,7 @@ public class GameGraphics {
                     g.drawImage(door, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
             }
-            g.drawImage(player, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
+            g.drawImage(prisoner, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
         }
 
     }
@@ -246,6 +245,11 @@ public class GameGraphics {
                 if (e.getKeyCode() == KeyEvent.VK_E) {
                     // Your logic for key pressed
                     isInteract = true;
+                }
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_3){
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("3", Main.p, Main.m);
+                    isInteract = false;
                 }
 
                 panel.repaint();
