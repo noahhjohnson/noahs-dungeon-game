@@ -41,8 +41,12 @@ public class GameGraphics {
     BufferedImage backButton;
     BufferedImage ResumeRed;
     BufferedImage ResumeBlack;
+    BufferedImage MenuBlack;
+    BufferedImage MenuRed;
 
     File ResumeBlackFile = new File("dungeon game noah/src/ResumeBlack.png");
+    File MenuRedFile = new File("dungeon game noah/src/MenuRed.png");
+    File MenuBlackFile = new File("dungeon game noah/src/MenuBlack.png");
     File ResumeRedFile = new File("dungeon game noah/src/ResumeRed.png");
     File Prisoner1File = new File("dungeon game noah/src/Prisoner1.png");
     File backButtonFile = new File("dungeon game noah/src/backButton.png");
@@ -172,14 +176,22 @@ public class GameGraphics {
 
     public void drawPause(Graphics g) throws IOException {
 
-        g.setColor(new Color(61,93,46));
+        g.setColor(new Color(61, 93, 46));
         g.fillRect(570, 212, 1055-570, 663-212);
         StoneBrickTitle = ImageIO.read(StoneBrickFile);
         PlayBack = ImageIO.read(PlayBackFile);
         ResumeRed = ImageIO.read(ResumeRedFile);
         ResumeBlack = ImageIO.read(ResumeBlackFile);
+        MenuBlack = ImageIO.read(MenuBlackFile);
+        MenuRed = ImageIO.read(MenuRedFile);
         g.drawImage(StoneBrickTitle, 650, 267, 325, 150, null);
         g.drawImage(PlayBack, 650, 450, 325, 150, null);
+        g.setColor(new Color(61, 93, 46, 125));
+        g.fillRect(650, 267, 325, 150);
+        g.fillRect( 650, 450, 325, 150);
+        g.drawImage(ResumeBlack, 675, 275, 300, 150, null);
+        g.drawImage(ResumeRed, 665, 287, 300, 150, null);
+        g.drawImage(MenuRed, 650, 445, 325,150, null);
 
     }
 
