@@ -13,6 +13,7 @@ import java.io.IOException;
 public class GameGraphics {
 
     private boolean isInteract = false;
+    private boolean canInteract = false;
 
     Color green = new Color(0,255,0, 65);
     JFrame frame;
@@ -43,7 +44,14 @@ public class GameGraphics {
     BufferedImage ResumeBlack;
     BufferedImage MenuBlack;
     BufferedImage MenuRed;
-
+    BufferedImage InteractFour;
+    BufferedImage InteractThree;
+    BufferedImage InteractTwo;
+    BufferedImage InteractOne;
+    File InteractFourFile = new File("dungeon game noah/src/InteractFour.png");
+    File InteractThreeFile = new File("dungeon game noah/src/InteractThree.png");
+    File InteractTwoFile = new File("dungeon game noah/src/InteractTwo.png");
+    File InteractOneFile = new File("dungeon game noah/src/InteractOne.png");
     File ResumeBlackFile = new File("dungeon game noah/src/ResumeBlack.png");
     File MenuRedFile = new File("dungeon game noah/src/MenuRed.png");
     File MenuBlackFile = new File("dungeon game noah/src/MenuBlack.png");
@@ -101,7 +109,7 @@ public class GameGraphics {
                 if (Map.mapRep[j][i].equals("W ")) {
                     g.drawImage(prisonWall, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("\ud83d\udecf️")) {
+                if (Map.mapRep[j][i].equals("\ud83d\udecf\ufe0f")) {
                     g.drawImage(bed, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
                 if (Map.mapRep[j][i].equals("\ud83d\udebf")) {
@@ -191,7 +199,9 @@ public class GameGraphics {
         g.fillRect( 650, 450, 325, 150);
         g.drawImage(ResumeBlack, 675, 275, 300, 150, null);
         g.drawImage(ResumeRed, 665, 287, 300, 150, null);
+        g.drawImage(MenuBlack, 665, 433, 325, 150, null);
         g.drawImage(MenuRed, 650, 445, 325,150, null);
+
 
     }
 
@@ -199,6 +209,11 @@ public class GameGraphics {
         frame = new JFrame("DungeonGame");
         frame.setVisible(true);
         label.setFont(new Font("Sedan", Font.PLAIN, 18));
+
+        InteractFour = ImageIO.read(InteractFourFile);
+        InteractThree = ImageIO.read(InteractThreeFile);
+        InteractTwo = ImageIO.read(InteractTwoFile);
+        InteractOne = ImageIO.read(InteractOneFile);
         panel = new JPanel(null) {
 
             // 0 = Main Menu, 1 = The Game, 2  Pause Menu
@@ -212,19 +227,27 @@ public class GameGraphics {
 
                     if(mainMenuSelector.equals("Play")){
                         drawMap(g);
+                       if(isInteract){
+                               //dialogueBox("hi", g);
+                               System.out.println("");
+                       }
                     }
 
                     if(mainMenuSelector.equals("Tutorial")){
                         drawTutorial(g);
                     }
                     if(isInteract){
+
                         g.setColor(green);
                         g.fillRect(Main.p.x * blockSize,(Main.p.y * blockSize) - blockSize, blockSize, blockSize);
                         g.fillRect(Main.p.x * blockSize,(Main.p.y * blockSize) + blockSize, blockSize, blockSize);
                         g.fillRect((Main.p.x * blockSize) - blockSize, (Main.p.y * blockSize), blockSize, blockSize);
                         g.fillRect((Main.p.x * blockSize) + blockSize, (Main.p.y * blockSize), blockSize, blockSize);
+                        g.drawImage(InteractOne, Main.p.x * blockSize, (Main.p.y * blockSize) - blockSize, blockSize, blockSize, null);
+                        g.drawImage(InteractThree, Main.p.x * blockSize, (Main.p.y * blockSize) + blockSize, blockSize, blockSize, null);
+                        g.drawImage(InteractTwo, (Main.p.x * blockSize) + blockSize, (Main.p.y * blockSize), blockSize, blockSize, null);
+                        g.drawImage(InteractFour, (Main.p.x * blockSize) - blockSize, (Main.p.y * blockSize), blockSize, blockSize, null);
                     }
-
                     if(mainMenuSelector.equals("Pause Menu")){
                         drawPause(g);
                     }
@@ -258,7 +281,7 @@ public class GameGraphics {
 
                 System.out.print("Y Position: ");
                 System.out.println(e.getY());
-                if (e.getX() > 451 && e.getX() < 1148 && e.getY() > 346 && e.getY() < 536) {
+                if (e.getX() > 450 && e.getX() < 1149 && e.getY() > 344 && e.getY() < 534) {
                     System.out.println("Play");
                     mainMenuSelector = "Play";
                     System.out.println(mainMenuSelector);
@@ -269,8 +292,13 @@ public class GameGraphics {
                     mainMenuSelector = "Tutorial";
                     panel.repaint();
                 }
-                if (e.getX() > 41 && e.getX() < 105 && e.getY() > 758 && e.getY() < 820) {
-                    System.out.println("Back");
+                if (e.getX() > 651 && e.getX() < 974 && e.getY() > 449 && e.getY() < 599) {
+                    System.out.println("Pause Back");
+                    mainMenuSelector = "main menu";
+                    panel.repaint();
+                }
+                if (e.getX() > 43 && e.getX() < 104 && e.getY() > 759 && e.getY() < 821) {
+                    System.out.println("Tutorial Back");
                     mainMenuSelector = "main menu";
                     panel.repaint();
                 }
@@ -322,8 +350,22 @@ public class GameGraphics {
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_E) {
+                    //System.out.println("oahsds");
+                    //isInteract = true;
                     // Your logic for key pressed
-                    isInteract = true;
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    for(int i = 0; i < 4; i++){
+                        System.out.print("["+i+"] ");
+                        if(BasicCommands.itemsNearMe.size() == 0){
+                            return;
+                        }
+                        System.out.println(BasicCommands.itemsNearMe.get(i));
+                        if (!BasicCommands.itemsNearMe.get(i).equals(". ")) {
+                            isInteract = true;
+                            //break;
+                        }
+                        System.out.println(isInteract);
+                    }
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_1){
                     BasicCommands.checkItemsNearMe(Main.p);
@@ -360,6 +402,18 @@ public class GameGraphics {
         // Setting focus on the panel
         panel.setFocusable(true);
         panel.requestFocusInWindow();
+    }
+
+    private void dialogueBox(String s, Graphics g){
+        //TODO finish the following, also use g.drawString() to ensure that the String s param works as intended
+        g.setColor(new Color(210, 210, 210));
+        g.fillRect(0,556, 2000, 270);
+        Font font = new Font("Serif", Font.BOLD, 36);
+        g.setFont(font);
+
+        // Draw some text
+        g.setColor(Color.BLACK);
+        g.drawString(s, 50, 600); // Draw text at position (50, 100)
     }
 }
 
