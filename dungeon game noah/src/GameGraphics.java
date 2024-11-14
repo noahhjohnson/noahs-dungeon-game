@@ -170,6 +170,29 @@ public class GameGraphics {
         g.drawRect(145-xPanelPosition,100, 400, 650);
         g.setColor(new Color(61, 93, 46));
         g.fillRect(145-xPanelPosition, 100, 400, 650);
+        g.setColor(new Color(255,50,50));
+        Font font = new Font("Serif", Font.BOLD, 40);
+        g.setFont(font);
+        g.drawString("Controls", 225, 152);
+        g.drawLine(160, 160, 430, 160);
+        Font font1 = new Font("Serif", Font.CENTER_BASELINE, 19);
+        g.setFont(font1);
+        g.setColor(new Color(10, 20,30));
+        g.drawString("Movement:", 145, 200);
+        g.setColor(new Color(255,255,255));
+        g.drawString("W - Move Up", 145, 220);
+        g.drawString("A - Move Left", 145, 240);
+        g.drawString("S - Move Down", 145, 260);
+        g.drawString("D - Move Right", 145, 280);
+        g.setColor(new Color(10, 20,30));
+        g.drawString("Interact:", 145, 320);
+        g.setColor(new Color(255,255,255));
+        g.drawString("E - Interact Menu", 145, 340);
+        g.drawString("1 - Interact Up", 145, 360);
+        g.drawString("2 - Interatct Right", 145, 380);
+        g.drawString("3 - Interact Down", 145, 400);
+        g.drawString("4 - Interact Left", 145, 420);
+
         //-
         g.drawRect(650-xPanelPosition, 100,400, 650);
         g.setColor(new Color(61, 93, 46));
