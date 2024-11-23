@@ -14,6 +14,7 @@ public class GameGraphics {
 
     private boolean isInteract = false;
     private boolean canInteract = false;
+    private boolean dialogueIsShowing = false;
 
     Color green = new Color(0,255,0, 65);
     JFrame frame;
@@ -280,6 +281,26 @@ public class GameGraphics {
                 label.setText(Main.p.x + " " + Main.p.y);
                 label2.setText("<html> [Backstory]: You are a thief that has attempted to steal coins and you got caught. You are now serving time in prison. <br/> You have a friend, Doug who is a Prison Guard, he wants you to turn your life around. </html>");
                 label3.setText("<html> [Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. <br/> I'm wondering if a theif like you would even consider the position. </html>");
+
+                if(dialogueIsShowing){
+                    System.out.println(Main.p.x +", "+ Main.p.y);
+                    if(Main.p.x == 17 && Main.p.y == 5) {
+                        dialogueBox("Depressed Guy: Just leave me alone...", g);
+                    }
+                    if(Main.p.x == 18 && Main.p.y == 6) {
+                        dialogueBox("Depressed Guy: Just leave me alone...", g);
+                    }
+                    if(Main.p.x == 13 && Main.p.y == 7) {
+                        dialogueBox("Prisoner: Gimme your shoes.", g);
+                    }
+                    if(Main.p.x == 14  && Main.p.y == 6) {
+                        dialogueBox("Prisoner: Gimme your shoes.", g);
+                    }
+                    if(Main.p.x == 15  && Main.p.y == 7) {
+                        dialogueBox("Prisoner: Gimme your shoes.", g);
+                    }
+
+                }
             }
         };
 
@@ -357,19 +378,22 @@ public class GameGraphics {
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     // Your logic for key pressed
                     BasicCommands.movement("s", Main.p);
-
+                    dialogueIsShowing = false;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_W) {
                     // Your logic for key pressed
                     BasicCommands.movement("w", Main.p);
+                    dialogueIsShowing = false;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_A) {
                     // Your logic for key pressed
                     BasicCommands.movement("a", Main.p);
+                    dialogueIsShowing = false;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_D) {
                     // Your logic for key pressed
                     BasicCommands.movement("d", Main.p);
+                    dialogueIsShowing = false;
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_E) {
@@ -393,8 +417,37 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_1){
                     BasicCommands.checkItemsNearMe(Main.p);
                     BasicCommands.interactInput("1", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(0).equals("\ud83d\ude4d")){
+                        dialogueIsShowing = true;
+                    }
                     isInteract = false;
                 }
+
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_2) {
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("2", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(1).equals("\ud83d\ude4d")) {
+                        dialogueIsShowing = true;
+                    }
+                    isInteract = false;
+                }
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_3) {
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("3", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(2).equals("\ud83d\ude4d")) {
+                        dialogueIsShowing = true;
+                    }
+                    isInteract = false;
+                }
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_4) {
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("4", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(3).equals("\ud83d\ude4d")) {
+                        dialogueIsShowing = true;
+                    }
+                    isInteract = false;
+                }
+
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_2){
                     BasicCommands.checkItemsNearMe(Main.p);
                     BasicCommands.interactInput("2", Main.p, Main.m);
