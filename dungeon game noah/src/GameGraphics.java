@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class GameGraphics {
 
@@ -49,6 +50,8 @@ public class GameGraphics {
     BufferedImage InteractThree;
     BufferedImage InteractTwo;
     BufferedImage InteractOne;
+    BufferedImage Guard;
+    File GuardFile = new File("dungeon game noah/src/Riot_guard.png");
     File InteractFourFile = new File("dungeon game noah/src/InteractFour.png");
     File InteractThreeFile = new File("dungeon game noah/src/InteractThree.png");
     File InteractTwoFile = new File("dungeon game noah/src/InteractTwo.png");
@@ -96,6 +99,7 @@ public class GameGraphics {
         floor = ImageIO.read(PrisonFloorFile);
         Table = ImageIO.read(TableFile);
         Prisoner1 = ImageIO.read(Prisoner1File);
+        Guard = ImageIO.read(GuardFile);
 
 
 
@@ -124,6 +128,9 @@ public class GameGraphics {
                 }
                 if (Map.mapRep[j][i].equals("\ud83d\ude4d")) {
                     g.drawImage(Prisoner1, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if (Map.mapRep[j][i].equals("\ud83d\udc6e")) {
+                    g.drawImage(Guard, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
             }
             g.drawImage(prisoner, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
@@ -282,24 +289,56 @@ public class GameGraphics {
                 label2.setText("<html> [Backstory]: You are a thief that has attempted to steal coins and you got caught. You are now serving time in prison. <br/> You have a friend, Doug who is a Prison Guard, he wants you to turn your life around. </html>");
                 label3.setText("<html> [Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. <br/> I'm wondering if a theif like you would even consider the position. </html>");
 
-                if(dialogueIsShowing){
-                    System.out.println(Main.p.x +", "+ Main.p.y);
-                    if(Main.p.x == 17 && Main.p.y == 5) {
-                        dialogueBox("Depressed Guy: Just leave me alone...", g);
-                    }
-                    if(Main.p.x == 18 && Main.p.y == 6) {
-                        dialogueBox("Depressed Guy: Just leave me alone...", g);
-                    }
-                    if(Main.p.x == 13 && Main.p.y == 7) {
-                        dialogueBox("Prisoner: Gimme your shoes.", g);
-                    }
-                    if(Main.p.x == 14  && Main.p.y == 6) {
-                        dialogueBox("Prisoner: Gimme your shoes.", g);
-                    }
-                    if(Main.p.x == 15  && Main.p.y == 7) {
-                        dialogueBox("Prisoner: Gimme your shoes.", g);
-                    }
+                if(dialogueIsShowing) {
+                    System.out.println(Main.p.x + ", " + Main.p.y);
 
+                    if (Main.p.x == 18 && Main.p.y == 6 ||
+                            Main.p.x == 17 && Main.p.y == 5) {
+                        dialogueBox("Depressed Guy: Just leave me alone...", g, "\ud83d\ude4d");
+                    }
+                    if (Main.p.x == 15 && Main.p.y == 7 ||
+                            Main.p.x == 14 && Main.p.y == 6 ||
+                            Main.p.x == 13 && Main.p.y == 7) {
+                        dialogueBox("Prisoner: Gimme your shoes.", g, "\ud83d\ude4d");
+                    }
+                    if (Main.p.x == 6 && Main.p.y == 7 ||
+                            Main.p.x == 6 && Main.p.y == 6 ||
+                            Main.p.x == 5 && Main.p.y == 6 ||
+                            Main.p.x == 4 && Main.p.y == 7) {
+                        dialogueBox("Prisoner: I'm telling you, they need to bring back the good coffee in the chow hall.   ", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 5  && Main.p.y == 10 ||
+                            Main.p.x == 6 && Main.p.y == 11 ||
+                            Main.p.x == 4 && Main.p.y == 11){
+                        dialogueBox("Prisoner: You are not hard.", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 13  && Main.p.y == 11 ||
+                            Main.p.x == 14 && Main.p.y == 10 ||
+                            Main.p.x == 15 && Main.p.y == 11) {
+                        dialogueBox("Prisoner: Hey, if you keep taking my seat at the card table, I'll take your lunch money.", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 15 && Main.p.y == 13 ||
+                            Main.p.x == 14 && Main.p.y == 14 ||
+                            Main.p.x == 13 && Main.p.y == 13) {
+                        dialogueBox("Prisoner: Whatever he said..", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 6 && Main.p.y == 13 ||
+                            Main.p.x == 5 && Main.p.y == 14 ||
+                            Main.p.x == 4 && Main.p.y == 13) {
+                        dialogueBox("Prisoner: Huh..?", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 2 && Main.p.y == 15 ||
+                            Main.p.x == 3 && Main.p.y == 16 ||
+                            Main.p.x == 2 && Main.p.y == 17 ||
+                            Main.p.x == 1 && Main.p.y == 16){
+                        dialogueBox("Guard: What you lookin' at?", g, "\ud83d\udc6e");
+                    }
+                    if(Main.p.x == 16 && Main.p.y == 16 ||
+                            Main.p.x == 17 && Main.p.y == 15 ||
+                            Main.p.x == 18 && Main.p.y == 16 ||
+                            Main.p.x == 17 && Main.p.y == 17){
+                        dialogueBox("Guard: Get outta here.", g, "\ud83d\udc6e");
+                    }
                 }
             }
         };
@@ -417,7 +456,7 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_1){
                     BasicCommands.checkItemsNearMe(Main.p);
                     BasicCommands.interactInput("1", Main.p, Main.m);
-                    if (BasicCommands.itemsNearMe.get(0).equals("\ud83d\ude4d")){
+                    if (BasicCommands.itemsNearMe.get(0).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(0).equals("\ud83d\udc6e")){
                         dialogueIsShowing = true;
                     }
                     isInteract = false;
@@ -426,7 +465,7 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_2) {
                     BasicCommands.checkItemsNearMe(Main.p);
                     BasicCommands.interactInput("2", Main.p, Main.m);
-                    if (BasicCommands.itemsNearMe.get(1).equals("\ud83d\ude4d")) {
+                    if (BasicCommands.itemsNearMe.get(1).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(1).equals("\ud83d\udc6e")) {
                         dialogueIsShowing = true;
                     }
                     isInteract = false;
@@ -434,7 +473,7 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_3) {
                     BasicCommands.checkItemsNearMe(Main.p);
                     BasicCommands.interactInput("3", Main.p, Main.m);
-                    if (BasicCommands.itemsNearMe.get(2).equals("\ud83d\ude4d")) {
+                    if (BasicCommands.itemsNearMe.get(2).equals("\ud83d\ude4d")|| BasicCommands.itemsNearMe.get(2).equals("\ud83d\udc6e")) {
                         dialogueIsShowing = true;
                     }
                     isInteract = false;
@@ -442,7 +481,7 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_4) {
                     BasicCommands.checkItemsNearMe(Main.p);
                     BasicCommands.interactInput("4", Main.p, Main.m);
-                    if (BasicCommands.itemsNearMe.get(3).equals("\ud83d\ude4d")) {
+                    if (BasicCommands.itemsNearMe.get(3).equals("\ud83d\ude4d")|| BasicCommands.itemsNearMe.get(1).equals("\ud83d\udc6e")) {
                         dialogueIsShowing = true;
                     }
                     isInteract = false;
@@ -480,16 +519,23 @@ public class GameGraphics {
         panel.requestFocusInWindow();
     }
 
-    private void dialogueBox(String s, Graphics g){
-        //TODO finish the following, also use g.drawString() to ensure that the String s param works as intended
+    private void dialogueBox(String s, Graphics g, String unicode){
         g.setColor(new Color(210, 210, 210));
         g.fillRect(0,556, 2000, 270);
-        Font font = new Font("Serif", Font.BOLD, 36);
+        Font font = new Font("Serif", Font.BOLD, 25);
         g.setFont(font);
 
         // Draw some text
         g.setColor(Color.BLACK);
-        g.drawString(s, 50, 600); // Draw text at position (50, 100)
+        g.drawString(s, 210, 645); // Draw text at position (50, 100)
+        if(Objects.equals(unicode, "\ud83d\udc6e")){
+            g.drawImage(Guard,-10, 610, 250, 200, null);
+        }
+        if(Objects.equals(unicode, "\ud83d\ude4d")){
+            g.drawImage(Prisoner1, -40, 610, 300, 200, null);
+    }
+
+
     }
 }
 
