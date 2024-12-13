@@ -283,7 +283,7 @@ public class BasicCommands{
         return inputChar;
     }
 
-    private String getInteractCell(int i){
+    private static String getInteractCell(int i){
         if(i== 1){
             System.out.println(Map.mapRep[Main.p.x][Main.p.y-1]);
             return Map.mapRep[Main.p.x][Main.p.y-1];
