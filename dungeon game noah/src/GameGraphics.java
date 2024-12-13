@@ -26,6 +26,7 @@ public class GameGraphics {
     JPanel tutorial1 = new JPanel();
     BufferedImage prisoner;
     BufferedImage prisonWall;
+    BufferedImage Trashcan;
     BufferedImage sink;
     BufferedImage door;
     BufferedImage bed;
@@ -51,6 +52,7 @@ public class GameGraphics {
     BufferedImage InteractTwo;
     BufferedImage InteractOne;
     BufferedImage Guard;
+    File TrashcanFile = new File("dungeon game noah/src/Trashcan.png");
     File GuardFile = new File("dungeon game noah/src/Riot_guard.png");
     File InteractFourFile = new File("dungeon game noah/src/InteractFour.png");
     File InteractThreeFile = new File("dungeon game noah/src/InteractThree.png");
@@ -84,6 +86,8 @@ public class GameGraphics {
     private int blockSize = 160;
     private int cellSize = 15;
 
+    public boolean inventoryChecker = false;
+
     public GameGraphics() throws IOException, FontFormatException {
     }
 
@@ -100,6 +104,7 @@ public class GameGraphics {
         Table = ImageIO.read(TableFile);
         Prisoner1 = ImageIO.read(Prisoner1File);
         Guard = ImageIO.read(GuardFile);
+        Trashcan = ImageIO.read(TrashcanFile);
 
 
 
@@ -131,6 +136,9 @@ public class GameGraphics {
                 }
                 if (Map.mapRep[j][i].equals("\ud83d\udc6e")) {
                     g.drawImage(Guard, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if(Map.mapRep[j][i].equals("R ")) {
+                    g.drawImage(Trashcan, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
             }
             g.drawImage(prisoner, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
@@ -200,6 +208,9 @@ public class GameGraphics {
         g.drawString("2 - Interatct Right", 145, 380);
         g.drawString("3 - Interact Down", 145, 400);
         g.drawString("4 - Interact Left", 145, 420);
+        g.setColor(new Color(10, 20,30));
+        g.drawString("Pause Game - M", 145, 460
+        );
 
         //-
         g.drawRect(650-xPanelPosition, 100,400, 650);
