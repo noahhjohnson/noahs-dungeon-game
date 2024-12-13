@@ -1,426 +1,552 @@
-import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
-import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
-//Make Interact Menu Clockwise
+public class GameGraphics {
 
+    private boolean isInteract = false;
+    private boolean canInteract = false;
+    private boolean dialogueIsShowing = false;
 
+    Color green = new Color(0,255,0, 65);
+    JFrame frame;
+    JPanel panel;
+    JLabel label = new JLabel(Main.p.x + " " + Main.p.y);
+    JLabel label2 = new JLabel("[Backstory]: You are a thief that has \n attempted to steal coins and you got caught. You are now serving time in prison. You have a friend, Doug who is a Prison Guard, he wants you to turn your life around.");
+    JLabel label3 = new JLabel("[Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. I'm wondering if a thief like you would even consider the position.");
+    JPanel tutorial1 = new JPanel();
+    BufferedImage prisoner;
+    BufferedImage prisonWall;
+    BufferedImage Trashcan;
+    BufferedImage sink;
+    BufferedImage door;
+    BufferedImage bed;
+    BufferedImage floor;
+    BufferedImage BlackTitle;
+    BufferedImage RedTitle;
+    BufferedImage StoneBrickTitle;
+    BufferedImage TutBlack;
+    BufferedImage TutRed;
+    BufferedImage PlayBack;
+    BufferedImage PlayBlack;
+    BufferedImage PlayRed;
+    BufferedImage CobbleBack;
+    BufferedImage Table;
+    BufferedImage Prisoner1;
+    BufferedImage backButton;
+    BufferedImage ResumeRed;
+    BufferedImage ResumeBlack;
+    BufferedImage MenuBlack;
+    BufferedImage MenuRed;
+    BufferedImage InteractFour;
+    BufferedImage InteractThree;
+    BufferedImage InteractTwo;
+    BufferedImage InteractOne;
+    BufferedImage Guard;
+    File TrashcanFile = new File("dungeon game noah/src/Trashcan.png");
+    File GuardFile = new File("dungeon game noah/src/Riot_guard.png");
+    File InteractFourFile = new File("dungeon game noah/src/InteractFour.png");
+    File InteractThreeFile = new File("dungeon game noah/src/InteractThree.png");
+    File InteractTwoFile = new File("dungeon game noah/src/InteractTwo.png");
+    File InteractOneFile = new File("dungeon game noah/src/InteractOne.png");
+    File ResumeBlackFile = new File("dungeon game noah/src/ResumeBlack.png");
+    File MenuRedFile = new File("dungeon game noah/src/MenuRed.png");
+    File MenuBlackFile = new File("dungeon game noah/src/MenuBlack.png");
+    File ResumeRedFile = new File("dungeon game noah/src/ResumeRed.png");
+    File Prisoner1File = new File("dungeon game noah/src/Prisoner1.png");
+    File backButtonFile = new File("dungeon game noah/src/backButton.png");
+    File TableFile = new File("dungeon game noah/src/Table.png");
+    File PrisonFloorFile = new File("dungeon game noah/src/PrisonFloorTiles.png");
+    File prisonerFile = new File("dungeon game noah/src/Prisoner.png");
+    File PWallFile = new File("dungeon game noah/src/PrisonWall.png");
+    File bedFile = new File("dungeon game noah/src/Bed.png");
+    File sinkFile = new File("dungeon game noah/src/Sink.png");
+    File doorFile = new File("dungeon game noah/src/PrisonDoor.png");
+    File TitleBlackFile = new File("dungeon game noah/src/TitleBlack.png");
+    File TitleRedFile = new File("dungeon game noah/src/TitleRed.png");
+    File StoneBrickFile = new File("dungeon game noah/src/StoneBrickTitle.jpg");
+    File TutBlackFile = new File("dungeon game noah/src/TutBlack.png");
+    File TutRedFile = new File("dungeon game noah/src/TutRed.png");
+    File PlayBackFile = new File("dungeon game noah/src/PlayBack.png");
+    File PlayBlackFile = new File("dungeon game noah/src/PlayBlack.png");
+    File PlayRedFile = new File("dungeon game noah/src/PlayRed.png");
+    File CobbleBackFile = new File("dungeon game noah/src/CobbleBack.png");
 
-public class BasicCommands{
-    static boolean gameBegin = true;
-    //Forward: W
-    //Left: A
-    //Backwards: S
-    //Right: D
-    //Interact: E
-    //Block: X
-    //Attack: J
-    public static ArrayList<String> itemsNearMe = new ArrayList<>();
+    private String mainMenuSelector = "main menu";
 
+    private int blockSize = 160;
+    private int cellSize = 15;
 
+    public boolean inventoryChecker = false;
 
-    // 1.) Bottom Right Guard: 16,16 | 2.) Bottom Left Guard: 3,16
-    public static ArrayList <Integer> interactcounts = new ArrayList<>();
-    public static void addinteractcount(){
-        interactcounts.add(0);
+    public GameGraphics() throws IOException, FontFormatException {
     }
 
-  /*public static void printItemsNearMe(){
-    for(String s: itemsNearMe){
-      System.out.print(s);
-    }
-    System.out.println();
-    for(int i=1; i<itemsNearMe.size(); i++){
-      if(!itemsNearMe.get(i).equals("")){
-        System.out.print(i);
-      }
-    }
-  }*/
-
-    public static String italic(){
-        return "\033[3m";
-
-    }
-
-    public static String unitalic(){
-        return "\033[0m";
-
-    }
-
-    public static String bold(){
-        return"\033[0;1m";
-
-    }
-
-    public static String unbold(){
-        return "\033[0m";
-
-    }
-
-    public static void checkItemsNearMe(Player p){
-        itemsNearMe.clear();
-        for(int i=0; i<4; i++){
-            itemsNearMe.add("");
+    public void drawMap(Graphics g) throws IOException {
+        if (Map.map == 2) {
+            blockSize = 40;
         }
-        //Up
-        if(!Map.mapRep[p.x][p.y-1].equals("W") && !Map.mapRep[p.x][p.y-1].equals(".") ){
-            itemsNearMe.set(0, Map.mapRep[p.x][p.y-1]);
-
-        }
-        if(!Map.mapRep[p.x-1][p.y].equals("W") && !Map.mapRep[p.x-1][p.y].equals(".") ){
-            itemsNearMe.set(3, Map.mapRep[p.x-1][p.y]);
-
-        }
-        if(!Map.mapRep[p.x][p.y+1].equals("W") && !Map.mapRep[p.x][p.y+1].equals(".") ){
-            itemsNearMe.set(2, Map.mapRep[p.x][p.y+1]);
-
-        }
-        if(!Map.mapRep[p.x+1][p.y].equals("W") && !Map.mapRep[p.x+1][p.y].equals(".") ){
-            itemsNearMe.set(1, Map.mapRep[p.x+1][p.y]);
-
-        }
-        System.out.println(itemsNearMe);
-        System.out.println(" 1  2  3   4 ");
-        if(gameBegin)System.out.println(italic()+"Game: This is where you can choose what to interact with." +unitalic());
-        System.out.println("---------------------");
-        gameBegin = false;
-
-    }
-
-    public static int interactCount = 0;
-    public static int interactCount2 = 0;
-
-    public static char interactInput(String i, Player p, Map m){
-
-
-        int inputInt = -1;
-        for (int j = 0; j<itemsNearMe.size();j++){
-
-        }
-
-        char inputChar = '_';
-        if(i.equals("W") || i.equals("A") || i.equals("S") || i.equals("D")){
-            movement(i, p);
-            m.visual();
-            System.out.println("w");
-            return '_';
-        }
-        if(i.equals("1")||i.equals("2")||i.equals("3")||i.equals("4")){
-            inputInt = Integer.parseInt(i);
-        }
-
-        if(itemsNearMe.get(inputInt-1).length()==0){
-            return '-';
-        }
-        inputChar = itemsNearMe.get(inputInt-1).charAt(0);
-        String colorinputInmate = Main.colorChar('I',255,255,0);
-
-        //else System.out.println(bold()+"Game: Interact with a plausable object."+unbold());
-
-        if(p.x == 2 && p.y == 3){
-            System.out.println(italic()+"Game: This is a door."+unitalic());
-            m.createMapTwo(p);
-            m.visual();
-        }
-        if(inputInt == 2 && p.x == 10 && p.y == 1){
-            System.out.println(italic()+"Game: This is a sink, you wash your face."+unitalic());
-        }
-        if(inputInt == 1 && p.x == 11 && p.y == 2){
-            System.out.println(italic()+"Game: Ths is a sink, you wash your face."+unitalic());
-        }
-        if(inputInt == 1 && p.x == 9 && p.y == 2){
-            System.out.println(italic()+"Game: This is a bed, you can sleep to regain health."+unitalic());
-            p.health +=15;
-        }
-        if(inputInt == 4 && p.x == 10 && p.y == 1){
-            System.out.println(italic()+"Game: This is a bed, you can sleep to regain health."+unitalic());
-            p.health +=15;
-        }
-        if(inputInt == 2 && p.x == 2 && p.y == 1){
-            System.out.println(italic()+"Game: This is a sink, you wash your face."+unitalic());
-        }
-        if(inputInt == 1 && p.x == 3 && p.y == 2){
-            System.out.println(italic()+"Game: This is a sink, you wash your face."+unitalic());
-        }
-        if(inputInt == 1 && p.x == 1 && p.y == 2){
-            System.out.println(italic()+"Game: This is a bed, you can sleep to regain health."+unitalic());
-            p.health +=15;
-        }
-        if(inputInt == 4 && p.x == 2 && p.y == 1){
-            System.out.println(italic()+"Game: This is a bed, you can sleep to regain health."+unitalic());
-            p.health +=15;
-        }
-
-        if((inputInt == 4 && p.x == 5 && p.y == 13) ||
-                (inputInt == 4 && p.x == 6 && p.y == 14) ||
-                (inputInt == 1 && p.x == 5 && p.y == 15) ||
-                (inputInt == 1 && p.x == 4 && p.y == 15) ||
-                (inputInt == 2 && p.x == 3 && p.y == 14) ||
-                (inputInt == 3 && p.x == 4 && p.y == 13)){
-            System.out.println(italic()+"Guard: If you want this key, you'll have to give me something in return.."+unitalic());
-        }
-
-
-
-    /*
-    if(inputInt == 4 && p.x == 5 && p.y == 13){
-      System.out.println(italic()+"Guard: If you want this key, you'll have to give me something in return.."+unitalic());
-    }
-    if(inputInt == 4 && p.x == 6 && p.y == 14){
-      System.out.println(italic()+"Guard: If you want this key, you'll have to give me something in return.."+unitalic());
-    }
-    if(inputInt == 1 && p.x == 5 && p.y == 15){
-      System.out.println(italic()+"Guard: If you want this key, you'll have to give me something in return.."+unitalic());
-    }
-    if(inputInt == 1 && p.x == 4 && p.y == 15){
-      System.out.println(italic()+"Guard: If you want this key, you'll have to give me something in return.."+unitalic());
-    }
-    if(inputInt == 2 && p.x == 3 && p.y == 14){
-      System.out.println(italic()+"Guard: If you want this key, you'll have to give me something in return.."+unitalic());
-    }
-    if(inputInt == 3 && p.x == 4 && p.y == 13){
-      System.out.println(italic()+"Guard: If you want this key, you'll have to give me something in return.."+unitalic());
-    }
-    */
-        if(inputInt == 3 && p.x == 4 && p.y == 3){
-            System.out.println(italic()+""+unitalic());
-        }
+        prisonWall = ImageIO.read(PWallFile);
+        prisoner = ImageIO.read(prisonerFile);
+        door = ImageIO.read(doorFile);
+        bed = ImageIO.read(bedFile);
+        sink = ImageIO.read(sinkFile);
+        floor = ImageIO.read(PrisonFloorFile);
+        Table = ImageIO.read(TableFile);
+        Prisoner1 = ImageIO.read(Prisoner1File);
+        Guard = ImageIO.read(GuardFile);
+        Trashcan = ImageIO.read(TrashcanFile);
 
 
 
 
-
-
-        if(p.x == Map.offsetx + 17 && p.y == Map.offsety + 5){
-            System.out.println(bold()+"Depressed Guy: Just leave me alone.."+unbold());
-        }
-        if( p.x == Map.offsetx +  18 && p.y == Map.offsety + 6){
-            System.out.println(bold()+"Depressed Guy: Just leave me alone.."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 13 && p.y == Map.offsety + 7){
-            System.out.println(bold()+"Inmate: Gimmie your shoes"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 14 && p.y == Map.offsety + 6){
-            System.out.println(bold()+"Inmate: Gimmie your shoes"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 15 && p.y == Map.offsety + 7){
-            System.out.println(bold()+"Inmate: Gimmie your shoes"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 5 && p.y == Map.offsety + 6){
-            System.out.println(bold()+"Inmate: I'm telling you, if they don't bring back the good coffee in the cafeteria, I'm going to organize a protest...just like the French..."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 4 && p.y == Map.offsety + 7){
-            System.out.println(bold()+"Inmate: I'm telling you, if they don't bring back the good coffee in the cafeteria, I'm going to organize a protest...just like the French..."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0))&& p.x == Map.offsetx + 15 && p.y == Map.offsety + 11){
-            System.out.println(bold()+"Inmate: Hey, if you keep taking my seat at the card table, I'm going to challenge you to a game of 'Monopoly,' and trust me, it's going to be a life sentence. I never lose!"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 14 && p.y == Map.offsety + 10){
-            System.out.println(bold()+"Inmate: Hey, if you keep taking my seat at the card table, I'm going to challenge you to a game of 'Monopoly,' and trust me, it's going to be a life sentence. I never lose!"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 13 && p.y == Map.offsety + 11){
-            System.out.println(bold()+"Inmate: Hey, if you keep taking my seat at the card table, I'm going to challenge you to a game of 'Monopoly,' and trust me, it's going to be a life sentence. I never lose!"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 13 && p.y == Map.offsety + 13){
-            System.out.println(bold()+"Inmate: Whatever he said.."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 15 && p.y == Map.offsety + 13){
-            System.out.println(bold()+"Inmate: Whatever he said.."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 14 && p.y == Map.offsety + 14){
-
-            System.out.println(bold()+"Inmate: Whatever he said.."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 5 && p.y == Map.offsety + 14){
-            System.out.println(bold()+"Inmate: Huh..?"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 4 && p.y == Map.offsety + 13){
-            System.out.println(bold()+"Inmate: Huh..?"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 6 && p.y == Map.offsety + 7){
-            System.out.println(bold()+"Inmate: I'm telling you, if they don't bring back the good coffee in the cafeteria, I'm going to organize a protest...just like the French..."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 15 && p.y == Map.offsety + 17){
-            System.out.println(bold()+"Inmate: Gimme your shoes"+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 6 && p.y == Map.offsety +13){
-            System.out.println(bold()+"Inmate: Huh..?"+unbold());
-        }
-
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 4 && p.y == Map.offsety + 11){
-            System.out.println(bold()+"Inmate: You are not hard."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 6 && p.y == Map.offsety + 11){
-            System.out.println(bold()+"Inmate: You are not hard."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 5 && p.y == Map.offsety + 10){
-            System.out.println(bold()+"Inmate: You are not hard."+unbold());
-        }
-        if(colorinputInmate.equals(Main.colorChar('I', 255, 255, 0)) && p.x == Map.offsetx + 5 && p.y == Map.offsety + 10){
-            System.out.println(bold()+"Inmate: You are not hard."+unbold());
-        }
-
-
-
-        if(inputInt == 4 && p.x == 1 && p.y == 10){
-            Map.hint1 = "Hint: Check the trashcans for items you can offer to the guard.";
-            m.createMapThree(p);
-            m.visual();
-        }
-        if(p.x == Map.offsetx + 16 && p.y == Map.offsety + 16 && interactCount2 == 0){
-
-            interactCount2++;
-
-            System.out.println(bold()+"Guard: You can just drop off the crate right there.\n"+unbold());
-            System.out.println(italic()+ "Game: You place the crate."+unitalic());
-
-        }
-        return inputChar;
-    }
-
-    public static boolean canMove = false;
-    public static void movement(String s, Player p){
-        if(!canMove) return;
-        if(s.equals("W")||s.equals("w")){
-            if(checkUp(p)){
-                Map.mapRep[p.x][p.y]=". ";
-                p.y--;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+        for (int i = 0; i < Map.mapRep.length; i++) {
+            for (int j = 0; j < Map.mapRep.length; j++) {
+                g.drawImage(floor, j * blockSize, i * blockSize, blockSize, blockSize, null);
             }
         }
-        else if(s.equals("A")||s.equals("a") ){
-            if(checkLeft(p)){
-                Map.mapRep[p.x][p.y]=". ";
-                p.x--;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+        for (int i = 0; i < Map.mapRep.length; i++) {
+            for (int j = 0; j < Map.mapRep.length; j++) {
+                if (Map.mapRep[j][i].equals("W ")) {
+                    g.drawImage(prisonWall, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if (Map.mapRep[j][i].equals("\ud83d\udecf\ufe0f")) {
+                    g.drawImage(bed, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if (Map.mapRep[j][i].equals("\ud83d\udebf")) {
+                    g.drawImage(sink, (j * blockSize), (i * blockSize), blockSize, blockSize, null);
+                }
+                if (Map.mapRep[j][i].equals("\uD83D\udeaa")) {
+                    g.drawImage(door, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if (Map.mapRep[j][i].equals("T ")){
+                    g.drawImage(Table, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if (Map.mapRep[j][i].equals("\ud83d\ude4d")) {
+                    g.drawImage(Prisoner1, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if (Map.mapRep[j][i].equals("\ud83d\udc6e")) {
+                    g.drawImage(Guard, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if(Map.mapRep[j][i].equals("R ")) {
+                    g.drawImage(Trashcan, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
             }
+            g.drawImage(prisoner, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
         }
-        else if(s.equals("D")||s.equals("d") ){
-            if(checkRight(p)){
-                Map.mapRep[p.x][p.y]=". ";
-                p.x++;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
-            }
-        }
-        else if(s.equals("S")||s.equals("s") ){
-            if(checkDown(p)){
-                Map.mapRep[p.x][p.y]=". ";
-                p.y++;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,251);
-            }
-        }
-        else if(s.length()>1){
-            String[] testing = s.split("-");
-            if(testing.length != 2) return;
-            int steps = Integer.parseInt(testing[1]);
-            if(testing[0].equals("W")){
-                Map.mapRep[p.x][p.y]=". ";
-                int stepP = 0;
-                for(int i = p.y; i > p.y-steps; i--, stepP--){
-                    if(!Map.mapRep [p.x][i].equals(".")){
-                        break;
+
+    }
+
+    public void drawMainMenu(Graphics g) throws IOException {
+        RedTitle = ImageIO.read(TitleRedFile);
+        BlackTitle = ImageIO.read(TitleBlackFile);
+        StoneBrickTitle = ImageIO.read(StoneBrickFile);
+        TutRed = ImageIO.read(TutRedFile);
+        TutBlack = ImageIO.read(TutBlackFile);
+        PlayBack = ImageIO.read(PlayBackFile);
+        PlayBlack = ImageIO.read(PlayBlackFile);
+        PlayRed = ImageIO.read(PlayRedFile);
+        CobbleBack = ImageIO.read(CobbleBackFile);
+        backButton = ImageIO.read(backButtonFile);
+        g.setColor(new Color(61,93,46));
+        g.fillRect(0,0, 1600, 1000);
+        g.setColor(new Color(0,0,0));
+        g.drawRect(450, 70, 700, 200);
+        g.drawRect(450, 70, 700, 200);
+        g.drawRect(450, 70, 700, 200);
+        g.drawRect(450, 70, 700, 200);
+        g.drawImage(StoneBrickTitle, 450, 70, 700, 200, null);
+        g.setColor(new Color(61, 93, 46, 125));
+        g.fillRect(450, 70, 700, 200);
+        g.drawImage(BlackTitle, 475, 105, null);
+        g.drawImage(RedTitle, 475, 110, null);
+        g.drawImage(PlayBack, 450, 345, null);
+        g.drawImage(PlayBack, 710, 345, null);
+        g.drawImage(PlayBack, 890, 345, null);
+        g.drawImage(PlayBlack, 715, 368, null);
+        g.drawImage(PlayRed, 695, 383, null);
+        g.drawImage(CobbleBack, 450, 600, 260,165, null);
+        g.drawImage(CobbleBack, 710, 600, 260,165, null);
+        g.drawImage(CobbleBack, 970, 600, 180,165, null);
+        g.drawImage(TutBlack, 640, 615, null);
+        g.drawImage(TutRed, 630, 625, null);
+    }
+
+    public void drawTutorial(Graphics g) throws IOException {
+        int xPanelPosition = 40;
+        g.drawRect(145-xPanelPosition,100, 400, 650);
+        g.setColor(new Color(61, 93, 46));
+        g.fillRect(145-xPanelPosition, 100, 400, 650);
+        g.setColor(new Color(255,50,50));
+        Font font = new Font("Serif", Font.BOLD, 40);
+        g.setFont(font);
+        g.drawString("Controls", 225, 152);
+        g.drawLine(160, 160, 430, 160);
+        Font font1 = new Font("Serif", Font.CENTER_BASELINE, 19);
+        g.setFont(font1);
+        g.setColor(new Color(10, 20,30));
+        g.drawString("Movement:", 145, 200);
+        g.setColor(new Color(255,255,255));
+        g.drawString("W - Move Up", 145, 220);
+        g.drawString("A - Move Left", 145, 240);
+        g.drawString("S - Move Down", 145, 260);
+        g.drawString("D - Move Right", 145, 280);
+        g.setColor(new Color(10, 20,30));
+        g.drawString("Interact:", 145, 320);
+        g.setColor(new Color(255,255,255));
+        g.drawString("E - Interact Menu", 145, 340);
+        g.drawString("1 - Interact Up", 145, 360);
+        g.drawString("2 - Interatct Right", 145, 380);
+        g.drawString("3 - Interact Down", 145, 400);
+        g.drawString("4 - Interact Left", 145, 420);
+        g.setColor(new Color(10, 20,30));
+        g.drawString("Pause Game - M", 145, 460
+        );
+
+        //-
+        g.drawRect(650-xPanelPosition, 100,400, 650);
+        g.setColor(new Color(61, 93, 46));
+        g.fillRect(650-xPanelPosition, 100, 400, 650);
+        //-
+        g.drawRect(1150-xPanelPosition,100, 400, 650);
+        g.setColor(new Color(61, 93, 46));
+        g.fillRect(1150-xPanelPosition, 100, 400, 650);
+
+        g.drawImage(backButton, 25,740, 100,100, null);
+    }
+
+    public void drawPause(Graphics g) throws IOException {
+
+        g.setColor(new Color(61, 93, 46));
+        g.fillRect(570, 212, 1055-570, 663-212);
+        StoneBrickTitle = ImageIO.read(StoneBrickFile);
+        PlayBack = ImageIO.read(PlayBackFile);
+        ResumeRed = ImageIO.read(ResumeRedFile);
+        ResumeBlack = ImageIO.read(ResumeBlackFile);
+        MenuBlack = ImageIO.read(MenuBlackFile);
+        MenuRed = ImageIO.read(MenuRedFile);
+        g.drawImage(StoneBrickTitle, 650, 267, 325, 150, null);
+        g.drawImage(PlayBack, 650, 450, 325, 150, null);
+        g.setColor(new Color(61, 93, 46, 125));
+        g.fillRect(650, 267, 325, 150);
+        g.fillRect( 650, 450, 325, 150);
+        g.drawImage(ResumeBlack, 675, 275, 300, 150, null);
+        g.drawImage(ResumeRed, 665, 287, 300, 150, null);
+        g.drawImage(MenuBlack, 665, 433, 325, 150, null);
+        g.drawImage(MenuRed, 650, 445, 325,150, null);
+
+
+    }
+
+    public void start() throws IOException {
+        frame = new JFrame("DungeonGame");
+        frame.setVisible(true);
+        label.setFont(new Font("Sedan", Font.PLAIN, 18));
+
+        InteractFour = ImageIO.read(InteractFourFile);
+        InteractThree = ImageIO.read(InteractThreeFile);
+        InteractTwo = ImageIO.read(InteractTwoFile);
+        InteractOne = ImageIO.read(InteractOneFile);
+        panel = new JPanel(null) {
+
+            // 0 = Main Menu, 1 = The Game, 2  Pause Menu
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    if(mainMenuSelector.equals("main menu")){
+                        drawMainMenu(g);
+                    }
+
+                    if(mainMenuSelector.equals("Play")){
+                        drawMap(g);
+                       if(isInteract){
+                               //dialogueBox("hi", g);
+                               System.out.println("");
+                       }
+                    }
+
+                    if(mainMenuSelector.equals("Tutorial")){
+                        drawTutorial(g);
+                    }
+                    if(isInteract){
+
+                        g.setColor(green);
+                        g.fillRect(Main.p.x * blockSize,(Main.p.y * blockSize) - blockSize, blockSize, blockSize);
+                        g.fillRect(Main.p.x * blockSize,(Main.p.y * blockSize) + blockSize, blockSize, blockSize);
+                        g.fillRect((Main.p.x * blockSize) - blockSize, (Main.p.y * blockSize), blockSize, blockSize);
+                        g.fillRect((Main.p.x * blockSize) + blockSize, (Main.p.y * blockSize), blockSize, blockSize);
+                        g.drawImage(InteractOne, Main.p.x * blockSize, (Main.p.y * blockSize) - blockSize, blockSize, blockSize, null);
+                        g.drawImage(InteractThree, Main.p.x * blockSize, (Main.p.y * blockSize) + blockSize, blockSize, blockSize, null);
+                        g.drawImage(InteractTwo, (Main.p.x * blockSize) + blockSize, (Main.p.y * blockSize), blockSize, blockSize, null);
+                        g.drawImage(InteractFour, (Main.p.x * blockSize) - blockSize, (Main.p.y * blockSize), blockSize, blockSize, null);
+                    }
+                    if(mainMenuSelector.equals("Pause Menu")){
+                        drawPause(g);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                label.setText(Main.p.x + " " + Main.p.y);
+                label2.setText("<html> [Backstory]: You are a thief that has attempted to steal coins and you got caught. You are now serving time in prison. <br/> You have a friend, Doug who is a Prison Guard, he wants you to turn your life around. </html>");
+                label3.setText("<html> [Doug]: I found a job opportunity for you, It's hauling crates for the Dining Hall. <br/> I'm wondering if a theif like you would even consider the position. </html>");
+
+                if(dialogueIsShowing) {
+                    System.out.println(Main.p.x + ", " + Main.p.y);
+
+                    if (Main.p.x == 18 && Main.p.y == 6 ||
+                            Main.p.x == 17 && Main.p.y == 5) {
+                        dialogueBox("Depressed Guy: Just leave me alone...", g, "\ud83d\ude4d");
+                    }
+                    if (Main.p.x == 15 && Main.p.y == 7 ||
+                            Main.p.x == 14 && Main.p.y == 6 ||
+                            Main.p.x == 13 && Main.p.y == 7) {
+                        dialogueBox("Prisoner: Gimme your shoes.", g, "\ud83d\ude4d");
+                    }
+                    if (Main.p.x == 6 && Main.p.y == 7 ||
+                            Main.p.x == 6 && Main.p.y == 6 ||
+                            Main.p.x == 5 && Main.p.y == 6 ||
+                            Main.p.x == 4 && Main.p.y == 7) {
+                        dialogueBox("Prisoner: I'm telling you, they need to bring back the good coffee in the chow hall.   ", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 5  && Main.p.y == 10 ||
+                            Main.p.x == 6 && Main.p.y == 11 ||
+                            Main.p.x == 4 && Main.p.y == 11){
+                        dialogueBox("Prisoner: You are not hard.", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 13  && Main.p.y == 11 ||
+                            Main.p.x == 14 && Main.p.y == 10 ||
+                            Main.p.x == 15 && Main.p.y == 11) {
+                        dialogueBox("Prisoner: Hey, if you keep taking my seat at the card table, I'll take your lunch money.", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 15 && Main.p.y == 13 ||
+                            Main.p.x == 14 && Main.p.y == 14 ||
+                            Main.p.x == 13 && Main.p.y == 13) {
+                        dialogueBox("Prisoner: Whatever he said..", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 6 && Main.p.y == 13 ||
+                            Main.p.x == 5 && Main.p.y == 14 ||
+                            Main.p.x == 4 && Main.p.y == 13) {
+                        dialogueBox("Prisoner: Huh..?", g, "\ud83d\ude4d");
+                    }
+                    if(Main.p.x == 2 && Main.p.y == 15 ||
+                            Main.p.x == 3 && Main.p.y == 16 ||
+                            Main.p.x == 2 && Main.p.y == 17 ||
+                            Main.p.x == 1 && Main.p.y == 16){
+                        dialogueBox("Guard: What you lookin' at?", g, "\ud83d\udc6e");
+                    }
+                    if(Main.p.x == 16 && Main.p.y == 16 ||
+                            Main.p.x == 17 && Main.p.y == 15 ||
+                            Main.p.x == 18 && Main.p.y == 16 ||
+                            Main.p.x == 17 && Main.p.y == 17){
+                        dialogueBox("Guard: Get outta here.", g, "\ud83d\udc6e");
                     }
                 }
-                p.y+=stepP+1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
-            if(testing[0].equals("A")){
-                Map.mapRep[p.x][p.y]=". ";
-                int stepP = 0;
-                for(int i = p.x; i > p.x-steps; i--, stepP--){
-                    if(!Map.mapRep [i][p.y].equals(". ")){
-                        break;
+        };
+
+        //panel.add(label);
+        //panel.add(label2);
+        //panel.add(label3);
+        label.setBounds(1550, 2, 100, 100);
+        label2.setBounds(850, 15, 7000, 100);
+        label3.setBounds(850, 50, 7000, 100);
+
+        panel.setPreferredSize(new Dimension(300, 200));
+        frame.add(panel);
+        frame.pack();
+
+        // Adding KeyListener to the panel
+        panel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                System.out.print("X Position: ");
+                System.out.println(e.getX());
+
+                System.out.print("Y Position: ");
+                System.out.println(e.getY());
+                if (e.getX() > 450 && e.getX() < 1149 && e.getY() > 344 && e.getY() < 534) {
+                    System.out.println("Play");
+                    mainMenuSelector = "Play";
+                    System.out.println(mainMenuSelector);
+                    panel.repaint();
+                }
+                if (e.getX() > 451 && e.getX() < 1148 && e.getY() > 599 && e.getY() < 763) {
+                    System.out.println("Tutorial");
+                    mainMenuSelector = "Tutorial";
+                    panel.repaint();
+                }
+                if (e.getX() > 651 && e.getX() < 974 && e.getY() > 449 && e.getY() < 599) {
+                    System.out.println("Pause Back");
+                    mainMenuSelector = "main menu";
+                    panel.repaint();
+                }
+                if (e.getX() > 43 && e.getX() < 104 && e.getY() > 759 && e.getY() < 821) {
+                    System.out.println("Tutorial Back");
+                    mainMenuSelector = "main menu";
+                    panel.repaint();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        panel.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("s", Main.p);
+                    dialogueIsShowing = false;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_W) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("w", Main.p);
+                    dialogueIsShowing = false;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_A) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("a", Main.p);
+                    dialogueIsShowing = false;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_D) {
+                    // Your logic for key pressed
+                    BasicCommands.movement("d", Main.p);
+                    dialogueIsShowing = false;
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_E) {
+                    //System.out.println("oahsds");
+                    //isInteract = true;
+                    // Your logic for key pressed
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    for(int i = 0; i < 4; i++){
+                        System.out.print("["+i+"] ");
+                        if(BasicCommands.itemsNearMe.size() == 0){
+                            return;
+                        }
+                        System.out.println(BasicCommands.itemsNearMe.get(i));
+                        if (!BasicCommands.itemsNearMe.get(i).equals(". ")) {
+                            isInteract = true;
+                            //break;
+                        }
+                        System.out.println(isInteract);
                     }
                 }
-                p.x+=stepP+1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
-            }
-            if(testing[0].equals("S")){
-                Map.mapRep[p.x][p.y]=". ";
-                int stepP = 0;
-                for(int i = p.y; i < p.y+steps; i++, stepP++){
-                    if(!Map.mapRep [p.x][i].equals(". ")){
-                        break;
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_1){
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("1", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(0).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(0).equals("\ud83d\udc6e")){
+                        dialogueIsShowing = true;
                     }
+                    isInteract = false;
                 }
-                p.y+=stepP-1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
-            }
-            if(testing[0].equals("D") || testing[0].equals("d")){
-                Map.mapRep[p.x][p.y]=". ";
-                int stepP = 0;
-                for(int i = p.x; i < p.x+steps; i++, stepP++){
-                    if(!Map.mapRep [i][p.y].equals(". ")){
-                        break;
+
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_2) {
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("2", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(1).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(1).equals("\ud83d\udc6e")) {
+                        dialogueIsShowing = true;
                     }
+                    isInteract = false;
                 }
-                p.x+=stepP-1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_3) {
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("3", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(2).equals("\ud83d\ude4d")|| BasicCommands.itemsNearMe.get(2).equals("\ud83d\udc6e")) {
+                        dialogueIsShowing = true;
+                    }
+                    isInteract = false;
+                }
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_4) {
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("4", Main.p, Main.m);
+                    if (BasicCommands.itemsNearMe.get(3).equals("\ud83d\ude4d")|| BasicCommands.itemsNearMe.get(1).equals("\ud83d\udc6e")) {
+                        dialogueIsShowing = true;
+                    }
+                    isInteract = false;
+                }
+
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_2){
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("2", Main.p, Main.m);
+                    isInteract = false;
+                }
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_3){
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("3", Main.p, Main.m);
+                    isInteract = false;
+                }
+                if(isInteract && e.getKeyCode() == KeyEvent.VK_4){
+                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.interactInput("4", Main.p, Main.m);
+                    isInteract = false;
+                }
+                if(e.getKeyCode() == KeyEvent.VK_M){
+                    mainMenuSelector = "Pause Menu";
+                }
+
+                panel.repaint();
             }
-        }
 
-    }
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
 
-    public static void getCommands(String s){
-        if(s.equals("Q") || s.equals("q")){
-            printCommands();
-        }
-    }
-
-    public void interact(String s, Character c, boolean b){
-        if(s.equals("E") || s.equals("e")){
-        }
-    }
-    public static boolean checkUp(Player p){
-        if(Map.mapRep[p.x][p.y-1].equals(". ")){
-            return true;
-        }
-        return false;
-    }
-    public static boolean checkLeft(Player p){
-        if(Map.mapRep[p.x-1][p.y].equals(". ")){
-            return true;
-        }
-        return false;
-    }
-    public static boolean checkRight(Player p){
-        if(Map.mapRep[p.x+1][p.y].equals(". ")){
-            return true;
-        }
-        return false;
-    }
-    public static boolean checkDown(Player p){
-        if(Map.mapRep[p.x][p.y+1].equals(". ")){
-            return true;
-        }
-        return false;
-    }
-    public static String interactMenu(String input){
-        int nInput =Integer.valueOf(input);
-        String s = String.valueOf(nInput);
-        if(s.length() > 0){
-
-            return itemsNearMe.get(Integer.valueOf(input)-1);
-        }
-
-        return "";
-    }
-    /**public void interact(String s, Item c, boolean b){
-     if(s.equals("E")||s.equals("e")){
-
-     }
-     }*/
-
-    private static void printCommands(){
-        System.out.println("Forward: W");
-        System.out.println("Left: A");
-        System.out.println("Backwards: S");
-        System.out.println("Left: D");
-        System.out.println("Interact: E");
-        System.out.println("Block: X");
-        System.out.println("Attack: J");
-        System.out.println("Forward 6 Steps: (W-6)");
+        // Setting focus on the panel
+        panel.setFocusable(true);
+        panel.requestFocusInWindow();
     }
 
+    private void dialogueBox(String s, Graphics g, String unicode){
+        g.setColor(new Color(210, 210, 210));
+        g.fillRect(0,556, 2000, 270);
+        Font font = new Font("Serif", Font.BOLD, 25);
+        g.setFont(font);
+
+        // Draw some text
+        g.setColor(Color.BLACK);
+        g.drawString(s, 210, 645); // Draw text at position (50, 100)
+        if(Objects.equals(unicode, "\ud83d\udc6e")){
+            g.drawImage(Guard,-10, 610, 250, 200, null);
+        }
+        if(Objects.equals(unicode, "\ud83d\ude4d")){
+            g.drawImage(Prisoner1, -40, 610, 300, 200, null);
+    }
+
+
+    }
 }
 
