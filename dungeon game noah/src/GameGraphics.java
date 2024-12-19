@@ -181,6 +181,23 @@ public class GameGraphics {
         g.drawImage(TutRed, 630, 625, null);
     }
 
+    public void drawInventory(Graphics g){
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(5));
+        g2d.setColor(Color.BLUE);
+
+
+        g.drawImage(prisoner, 275, 125, 200,200, null);
+        for (int i = 1; i < 5; i++) {
+            g.drawRect(100*i, 350, 200,200);
+        }
+        for (int i =1; i < 5; i++) {
+            g.drawRect(100*i, 450, 200,200);
+        }
+
+    }
+
     public void drawTutorial(Graphics g) throws IOException {
         int xPanelPosition = 40;
         g.drawRect(145-xPanelPosition,100, 400, 650);
@@ -351,7 +368,9 @@ public class GameGraphics {
                         dialogueBox("Guard: Get outta here.", g, "\ud83d\udc6e");
                     }
                 }
+                drawInventory(g);
             }
+
         };
 
         //panel.add(label);
