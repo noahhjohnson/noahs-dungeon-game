@@ -14,6 +14,7 @@ import java.util.Objects;
 public class GameGraphics {
 
     private boolean isInteract = false;
+    private int isInInventory = 0;
     private boolean canInteract = false;
     private boolean dialogueIsShowing = false;
 
@@ -196,6 +197,8 @@ public class GameGraphics {
             g.drawRect(100*i, 450, 200,200);
         }
 
+
+
     }
 
     public void drawTutorial(Graphics g) throws IOException {
@@ -368,7 +371,11 @@ public class GameGraphics {
                         dialogueBox("Guard: Get outta here.", g, "\ud83d\udc6e");
                     }
                 }
-                drawInventory(g);
+                if(isInInventory > 0){
+                    drawInventory(g);
+                    System.out.println(isInInventory);
+
+                }
             }
 
         };
@@ -440,7 +447,17 @@ public class GameGraphics {
         panel.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == 'g' || e.getKeyChar() == 'G') {
+                    if(isInInventory == 0) {
+                        isInInventory ++;
+                    }
+                    else if(isInInventory > 0) {
+                        isInInventory = 0;
+                    }
+                    System.out.println(isInInventory + " dog");
+                }
             }
+
 
             @Override
             public void keyPressed(KeyEvent e) {
@@ -464,6 +481,7 @@ public class GameGraphics {
                     BasicCommands.movement("d", Main.p);
                     dialogueIsShowing = false;
                 }
+
 
                 if (e.getKeyCode() == KeyEvent.VK_E) {
                     //System.out.println("oahsds");
@@ -568,4 +586,3 @@ public class GameGraphics {
 
     }
 }
-
