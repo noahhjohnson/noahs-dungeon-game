@@ -14,7 +14,7 @@ import java.util.Objects;
 public class GameGraphics {
 
     private boolean isInteract = false;
-    private int isInInventory = 0;
+    public int isInInventory = 0;
     private boolean canInteract = false;
     private boolean dialogueIsShowing = false;
 
@@ -53,6 +53,10 @@ public class GameGraphics {
     BufferedImage InteractTwo;
     BufferedImage InteractOne;
     BufferedImage Guard;
+    BufferedImage apple;
+    BufferedImage apple2;
+    File apple2File = new File("dungeon game noah/src/apple2.png");
+    File appleFile = new File("dungeon game noah/src/apple.png");
     File TrashcanFile = new File("dungeon game noah/src/Trashcan.png");
     File GuardFile = new File("dungeon game noah/src/Riot_guard.png");
     File InteractFourFile = new File("dungeon game noah/src/InteractFour.png");
@@ -106,8 +110,7 @@ public class GameGraphics {
         Prisoner1 = ImageIO.read(Prisoner1File);
         Guard = ImageIO.read(GuardFile);
         Trashcan = ImageIO.read(TrashcanFile);
-
-
+        apple2 = ImageIO.read(apple2File);
 
 
         for (int i = 0; i < Map.mapRep.length; i++) {
@@ -147,6 +150,18 @@ public class GameGraphics {
 
     }
 
+    public void drawInventoryItems(Graphics g) throws IOException {
+
+        //apple = ImageIO.read(new File("dungeon game noah/src/apple.png"));
+        for(String s: Inventory.myItems){
+            //System.out.println(s+"ohasd");
+            //g.drawImage(ImageIO.read(new File("dungeon game noah/src/"+s+".png")),800, 150, 100, 100,null );
+        }
+        g.drawImage(apple,0, 0, null );
+        panel.repaint();
+        panel.repaint();
+    }
+
     public void drawMainMenu(Graphics g) throws IOException {
         RedTitle = ImageIO.read(TitleRedFile);
         BlackTitle = ImageIO.read(TitleBlackFile);
@@ -182,23 +197,32 @@ public class GameGraphics {
         g.drawImage(TutRed, 630, 625, null);
     }
 
-    public void drawInventory(Graphics g){
+    public void drawInventory(Graphics g) throws IOException {
+        g.setColor(new Color(0,0,0, 85));
+        g.fillRect(0, 0, 1600, 1600);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(5));
         g2d.setColor(Color.BLUE);
+        g.setColor(new Color(0,0,255));
+
 
 
         g.drawImage(prisoner, 275, 125, 200,200, null);
+        g.drawImage(apple2,275, 125, 100, 100, null);
         for (int i = 1; i < 5; i++) {
-            g.drawRect(100*i, 350, 200,200);
+          g.drawRect(100*i, 350, 200,200);
         }
         for (int i =1; i < 5; i++) {
-            g.drawRect(100*i, 450, 200,200);
+           g.drawRect(100*i, 450, 200,200);
         }
 
-
-
+        for (int i = 1; i < 6; i++) {
+            for (int j = 1; j < 6; j++) {
+                g.drawRect((100*i)+800, (100*j)+20, 100, 100);
+            }
+        }
+        drawInventoryItems(g);
     }
 
     public void drawTutorial(Graphics g) throws IOException {
@@ -372,7 +396,11 @@ public class GameGraphics {
                     }
                 }
                 if(isInInventory > 0){
-                    drawInventory(g);
+                    try {
+                        drawInventory(g);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     System.out.println(isInInventory);
 
                 }
@@ -422,6 +450,14 @@ public class GameGraphics {
                     mainMenuSelector = "main menu";
                     panel.repaint();
                 }
+                if (e.getX() > 903 && e.getX() < 1400 && e.getY() > 151 && e.getY() < 648) {
+                    System.out.println("great");
+                    panel.repaint();
+                }
+                System.out.println("dogcat" + (int)Math.floor((e.getX()-900)/100));
+                System.out.println("catdog" + (int)Math.floor((e.getY()-120)/100));
+
+                System.out.println((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5));
             }
 
             @Override
@@ -498,7 +534,7 @@ public class GameGraphics {
                             isInteract = true;
                             //break;
                         }
-                        System.out.println(isInteract);
+                        //System.out.println(isInteract);
                     }
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_1){
@@ -520,10 +556,17 @@ public class GameGraphics {
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_3) {
                     BasicCommands.checkItemsNearMe(Main.p);
-                    BasicCommands.interactInput("3", Main.p, Main.m);
+                    char v = BasicCommands.interactInput("3", Main.p, Main.m);
+
                     if (BasicCommands.itemsNearMe.get(2).equals("\ud83d\ude4d")|| BasicCommands.itemsNearMe.get(2).equals("\ud83d\udc6e")) {
                         dialogueIsShowing = true;
                     }
+                    if(BasicCommands.itemsNearMe.get(2).equals("R   ")){
+                        isInInventory = 1;
+                        System.out.println("adas");
+                        panel.repaint();
+                    }
+                    System.out.println("If we press 3, this is what the return val is: "+v);
                     isInteract = false;
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_4) {
@@ -535,21 +578,24 @@ public class GameGraphics {
                     isInteract = false;
                 }
 
-                if(isInteract && e.getKeyCode() == KeyEvent.VK_2){
+                /*if(isInteract && e.getKeyCode() == KeyEvent.VK_2){
                     BasicCommands.checkItemsNearMe(Main.p);
                     BasicCommands.interactInput("2", Main.p, Main.m);
                     isInteract = false;
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_3){
                     BasicCommands.checkItemsNearMe(Main.p);
-                    BasicCommands.interactInput("3", Main.p, Main.m);
+                    char v = BasicCommands.interactInput("3", Main.p, Main.m);
+
                     isInteract = false;
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_4){
                     BasicCommands.checkItemsNearMe(Main.p);
-                    BasicCommands.interactInput("4", Main.p, Main.m);
+                     BasicCommands.interactInput("4", Main.p, Main.m);
+
+
                     isInteract = false;
-                }
+                }*/
                 if(e.getKeyCode() == KeyEvent.VK_M){
                     mainMenuSelector = "Pause Menu";
                 }
@@ -586,3 +632,4 @@ public class GameGraphics {
 
     }
 }
+
