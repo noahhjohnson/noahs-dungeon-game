@@ -55,6 +55,10 @@ public class GameGraphics {
     BufferedImage Guard;
     BufferedImage apple;
     BufferedImage apple2;
+    BufferedImage vicinity;
+    BufferedImage inventory;
+    File inventoryFile = new File("dungeon game noah/src/Inventory.png");
+    File vicinityFile = new File("dungeon game noah/src/Vicinity.png");
     File apple2File = new File("dungeon game noah/src/apple2.png");
     File appleFile = new File("dungeon game noah/src/apple.png");
     File TrashcanFile = new File("dungeon game noah/src/Trashcan.png");
@@ -173,6 +177,8 @@ public class GameGraphics {
         PlayRed = ImageIO.read(PlayRedFile);
         CobbleBack = ImageIO.read(CobbleBackFile);
         backButton = ImageIO.read(backButtonFile);
+        vicinity = ImageIO.read(vicinityFile);
+        inventory = ImageIO.read(inventoryFile);
         g.setColor(new Color(61,93,46));
         g.fillRect(0,0, 1600, 1000);
         g.setColor(new Color(0,0,0));
@@ -198,28 +204,30 @@ public class GameGraphics {
     }
 
     public void drawInventory(Graphics g) throws IOException {
-        g.setColor(new Color(0,0,0, 85));
+        g.setColor(new Color(0,0,0, 215));
         g.fillRect(0, 0, 1600, 1600);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(5));
-        g2d.setColor(Color.BLUE);
-        g.setColor(new Color(0,0,255));
+        g2d.setColor(Color.WHITE);
 
-
-
-        g.drawImage(prisoner, 275, 125, 200,200, null);
+        g.drawImage(inventory, 115, 635, 200, 100, null);
+        g.drawImage(vicinity, 920, 18, 200,100, null);
+        g.drawImage(prisoner, 275, 80, 200,200, null);
         g.drawImage(apple2,275, 125, 100, 100, null);
+
+            g2d.setColor(Color.WHITE);
+        // Player Inventory
         for (int i = 1; i < 5; i++) {
-          g.drawRect(100*i, 350, 200,200);
+          g.drawRect(100*i, 315, 200,200);
         }
         for (int i =1; i < 5; i++) {
-           g.drawRect(100*i, 450, 200,200);
+           g.drawRect(100*i, 415, 200,200);
         }
-
+        // Vicinity
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 6; j++) {
-                g.drawRect((100*i)+800, (100*j)+20, 100, 100);
+                g.drawRect((100*i)+800, (100*j)+15, 100, 100);
             }
         }
         drawInventoryItems(g);
