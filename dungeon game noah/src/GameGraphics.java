@@ -57,10 +57,14 @@ public class GameGraphics {
     BufferedImage apple2;
     BufferedImage vicinity;
     BufferedImage inventory;
+    BufferedImage banana;
+    BufferedImage Coin;
+    File CoinFile = new File("dungeon game noah/src/Coin.png");
+    File ductTapeFile = new File("dungeon game noah/src/ductTape.png");
+    File bananaFile = new File("dungeon game noah/src/banana.png");
     File inventoryFile = new File("dungeon game noah/src/Inventory.png");
     File vicinityFile = new File("dungeon game noah/src/Vicinity.png");
-    File apple2File = new File("dungeon game noah/src/apple2.png");
-    File appleFile = new File("dungeon game noah/src/apple.png");
+
     File TrashcanFile = new File("dungeon game noah/src/Trashcan.png");
     File GuardFile = new File("dungeon game noah/src/Riot_guard.png");
     File InteractFourFile = new File("dungeon game noah/src/InteractFour.png");
@@ -114,7 +118,6 @@ public class GameGraphics {
         Prisoner1 = ImageIO.read(Prisoner1File);
         Guard = ImageIO.read(GuardFile);
         Trashcan = ImageIO.read(TrashcanFile);
-        apple2 = ImageIO.read(apple2File);
 
 
         for (int i = 0; i < Map.mapRep.length; i++) {
@@ -155,13 +158,15 @@ public class GameGraphics {
     }
 
     public void drawInventoryItems(Graphics g) throws IOException {
+        banana = ImageIO.read(bananaFile);
+        Coin = ImageIO.read(CoinFile);
 
-        //apple = ImageIO.read(new File("dungeon game noah/src/apple.png"));
         for(String s: Inventory.myItems){
             //System.out.println(s+"ohasd");
             //g.drawImage(ImageIO.read(new File("dungeon game noah/src/"+s+".png")),800, 150, 100, 100,null );
         }
-        g.drawImage(apple,0, 0, null );
+        g.drawImage(banana, 910, 120, 80,80, null);
+        g.drawImage(Coin, 1000, 120,110,110, null);
         panel.repaint();
         panel.repaint();
     }
@@ -502,6 +507,24 @@ public class GameGraphics {
                 }
             }
 
+            private void checkToOpenInventory(int v){
+                if(BasicCommands.itemsNearMe.get(v).equals("R ")){
+                    isInInventory = 1;
+                    System.out.println("adas");
+                    panel.repaint();
+                }
+            }
+
+            private void handleOpeningInventory(int v, String s){
+                BasicCommands.checkItemsNearMe(Main.p);
+                BasicCommands.interactInput(s, Main.p, Main.m);
+                if (BasicCommands.itemsNearMe.get(v).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(v).equals("\ud83d\udc6e")){
+                    dialogueIsShowing = true;
+                }
+                checkToOpenInventory(v);
+                isInteract = false;
+            }
+
 
             @Override
             public void keyPressed(KeyEvent e) {
@@ -546,44 +569,17 @@ public class GameGraphics {
                     }
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_1){
-                    BasicCommands.checkItemsNearMe(Main.p);
-                    BasicCommands.interactInput("1", Main.p, Main.m);
-                    if (BasicCommands.itemsNearMe.get(0).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(0).equals("\ud83d\udc6e")){
-                        dialogueIsShowing = true;
-                    }
-                    isInteract = false;
+                    handleOpeningInventory(0,"1");
                 }
 
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_2) {
-                    BasicCommands.checkItemsNearMe(Main.p);
-                    BasicCommands.interactInput("2", Main.p, Main.m);
-                    if (BasicCommands.itemsNearMe.get(1).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(1).equals("\ud83d\udc6e")) {
-                        dialogueIsShowing = true;
-                    }
-                    isInteract = false;
+                    handleOpeningInventory(1,"2");
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_3) {
-                    BasicCommands.checkItemsNearMe(Main.p);
-                    char v = BasicCommands.interactInput("3", Main.p, Main.m);
-
-                    if (BasicCommands.itemsNearMe.get(2).equals("\ud83d\ude4d")|| BasicCommands.itemsNearMe.get(2).equals("\ud83d\udc6e")) {
-                        dialogueIsShowing = true;
-                    }
-                    if(BasicCommands.itemsNearMe.get(2).equals("R   ")){
-                        isInInventory = 1;
-                        System.out.println("adas");
-                        panel.repaint();
-                    }
-                    System.out.println("If we press 3, this is what the return val is: "+v);
-                    isInteract = false;
+                    handleOpeningInventory(2,"3");
                 }
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_4) {
-                    BasicCommands.checkItemsNearMe(Main.p);
-                    BasicCommands.interactInput("4", Main.p, Main.m);
-                    if (BasicCommands.itemsNearMe.get(3).equals("\ud83d\ude4d")|| BasicCommands.itemsNearMe.get(1).equals("\ud83d\udc6e")) {
-                        dialogueIsShowing = true;
-                    }
-                    isInteract = false;
+                    handleOpeningInventory(3,"4");
                 }
 
                 /*if(isInteract && e.getKeyCode() == KeyEvent.VK_2){
@@ -635,9 +631,14 @@ public class GameGraphics {
         }
         if(Objects.equals(unicode, "\ud83d\ude4d")){
             g.drawImage(Prisoner1, -40, 610, 300, 200, null);
+        }
+
     }
 
-
+    public void displayItemsInTrashcan(Graphics g, Box b){
+        for(int i = 0; i < b.manyItems(); i++){
+            //g.drawImage()
+        }
     }
 }
 
