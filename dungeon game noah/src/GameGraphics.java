@@ -53,14 +53,22 @@ public class GameGraphics {
     BufferedImage InteractTwo;
     BufferedImage InteractOne;
     BufferedImage Guard;
-    BufferedImage apple;
-    BufferedImage apple2;
     BufferedImage vicinity;
     BufferedImage inventory;
     BufferedImage banana;
     BufferedImage Coin;
+    BufferedImage Pencil;
+    BufferedImage Screw;
+    BufferedImage DuctTape;
+    BufferedImage Paper;
+    BufferedImage Apple;
+    File AppleFile = new File("dungeon game noah/src/Apple.png");
+    File PaperFile = new File("dungeon game noah/src/Paper.png");
+    File DuctTapeFile = new File("dungeon game noah/src/DuctTape.png");
+    File ScrewFile =  new File("dungeon game noah/src/Screw.png");
+
+    File PencilFile = new File("dungeon game noah/src/Pencil.png");
     File CoinFile = new File("dungeon game noah/src/Coin.png");
-    File ductTapeFile = new File("dungeon game noah/src/ductTape.png");
     File bananaFile = new File("dungeon game noah/src/banana.png");
     File inventoryFile = new File("dungeon game noah/src/Inventory.png");
     File vicinityFile = new File("dungeon game noah/src/Vicinity.png");
@@ -160,13 +168,18 @@ public class GameGraphics {
     public void drawInventoryItems(Graphics g) throws IOException {
         banana = ImageIO.read(bananaFile);
         Coin = ImageIO.read(CoinFile);
+        Paper = ImageIO.read(PaperFile);
+        Pencil = ImageIO.read(PencilFile);
+        DuctTape = ImageIO.read(DuctTapeFile);
+        Screw = ImageIO.read(ScrewFile);
+        Apple = ImageIO.read(AppleFile);
 
         for(String s: Inventory.myItems){
             //System.out.println(s+"ohasd");
             //g.drawImage(ImageIO.read(new File("dungeon game noah/src/"+s+".png")),800, 150, 100, 100,null );
         }
-        g.drawImage(banana, 910, 120, 80,80, null);
-        g.drawImage(Coin, 1000, 120,110,110, null);
+
+        if(Map.btopLeft != null)displayItemsInTrashcan(g, Map.btopLeft);
         panel.repaint();
         panel.repaint();
     }
@@ -219,7 +232,6 @@ public class GameGraphics {
         g.drawImage(inventory, 115, 635, 200, 100, null);
         g.drawImage(vicinity, 920, 18, 200,100, null);
         g.drawImage(prisoner, 275, 80, 200,200, null);
-        g.drawImage(apple2,275, 125, 100, 100, null);
 
             g2d.setColor(Color.WHITE);
         // Player Inventory
@@ -635,10 +647,15 @@ public class GameGraphics {
 
     }
 
-    public void displayItemsInTrashcan(Graphics g, Box b){
+    public void displayItemsInTrashcan(Graphics g, Box b) throws IOException {
         for(int i = 0; i < b.manyItems(); i++){
-            //g.drawImage()
+            System.out.print(b.getItem(i) + " cool");
+            g.drawImage(itemToFile(b.getItem(i)), (i*100)+900, 125, 100,80, null);
         }
+    }
+
+    private BufferedImage itemToFile(String item) throws IOException {
+        return ImageIO.read(new File("dungeon game noah/src/"+item + ".png"));
     }
 }
 
