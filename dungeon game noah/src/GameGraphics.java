@@ -179,7 +179,7 @@ public class GameGraphics {
             //g.drawImage(ImageIO.read(new File("dungeon game noah/src/"+s+".png")),800, 150, 100, 100,null );
         }
 
-        if(Map.btopLeft != null)displayItemsInTrashcan(g, Map.btopLeft);
+        if(Map.btopLeft != null)displayItemsInTrashcan(g, Map.bbottomRight);
         panel.repaint();
         panel.repaint();
     }
@@ -449,6 +449,10 @@ public class GameGraphics {
             @Override
             public void mouseClicked(MouseEvent e) {
 
+                if(isInInventory > 0){
+                    System.out.println("hello world");
+                }
+
                 System.out.print("X Position: ");
                 System.out.println(e.getX());
 
@@ -479,10 +483,11 @@ public class GameGraphics {
                     System.out.println("great");
                     panel.repaint();
                 }
-                System.out.println("dogcat" + (int)Math.floor((e.getX()-900)/100));
-                System.out.println("catdog" + (int)Math.floor((e.getY()-120)/100));
 
-                System.out.println((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5));
+                System.out.println(Map.bbottomRight.getItem((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5)));
+                Map.bbottomRight.printItemsInBox();
+                Inventory.printItems();
+
             }
 
             @Override
@@ -649,13 +654,17 @@ public class GameGraphics {
 
     public void displayItemsInTrashcan(Graphics g, Box b) throws IOException {
         for(int i = 0; i < b.manyItems(); i++){
-            System.out.print(b.getItem(i) + " cool");
             g.drawImage(itemToFile(b.getItem(i)), (i*100)+900, 125, 100,80, null);
         }
     }
 
     private BufferedImage itemToFile(String item) throws IOException {
         return ImageIO.read(new File("dungeon game noah/src/"+item + ".png"));
+    }
+
+    public void itemMover(int itemsIndex, Box b){
+        Inventory.myItems.add(b.getItem(itemsIndex));
+        b.remove(itemsIndex);
     }
 }
 
