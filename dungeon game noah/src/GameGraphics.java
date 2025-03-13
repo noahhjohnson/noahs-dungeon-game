@@ -180,8 +180,9 @@ public class GameGraphics {
         }
 
         if(Map.btopLeft != null)displayItemsInTrashcan(g, Map.bbottomRight);
+        drawItemsFromInventory(g);
         panel.repaint();
-        panel.repaint();
+
     }
 
     public void drawMainMenu(Graphics g) throws IOException {
@@ -487,6 +488,7 @@ public class GameGraphics {
                 System.out.println(Map.bbottomRight.getItem((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5)));
                 Map.bbottomRight.printItemsInBox();
                 Inventory.printItems();
+                itemMover((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5), Map.bbottomRight);
 
             }
 
@@ -662,9 +664,25 @@ public class GameGraphics {
         return ImageIO.read(new File("dungeon game noah/src/"+item + ".png"));
     }
 
+    public void drawItemsFromInventory(Graphics g) throws IOException {
+        for(int i =0; i < Inventory.myItems.size()-1; i++){
+            g.drawImage(itemToFile(Inventory.myItems.get((Inventory.myItems.size()-1)-i)), 105+(100*i),325,100,80,null);
+        }
+    }
+
     public void itemMover(int itemsIndex, Box b){
         Inventory.myItems.add(b.getItem(itemsIndex));
         b.remove(itemsIndex);
     }
+
+    /*
+    This allows us to translate from a list index to an x and y coordinate for the inventory.
+     */
+    public static void printOutput(int input){
+        int firstValue = input / 6;
+        int secondValue = input % 6;
+        System.out.println(firstValue + ", " + secondValue);
+    }
+
 }
 
