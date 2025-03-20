@@ -62,6 +62,8 @@ public class GameGraphics {
     BufferedImage DuctTape;
     BufferedImage Paper;
     BufferedImage Apple;
+    BufferedImage InventoryButton;
+    File InventoryButtonFile = new File("dungeon game noah/src/InventoryButton.png");
     File AppleFile = new File("dungeon game noah/src/Apple.png");
     File PaperFile = new File("dungeon game noah/src/Paper.png");
     File DuctTapeFile = new File("dungeon game noah/src/DuctTape.png");
@@ -166,6 +168,7 @@ public class GameGraphics {
     }
 
     public void drawInventoryItems(Graphics g) throws IOException {
+        System.out.println("hello world! " + Main.p.x + Main.p.y);
         banana = ImageIO.read(bananaFile);
         Coin = ImageIO.read(CoinFile);
         Paper = ImageIO.read(PaperFile);
@@ -174,12 +177,18 @@ public class GameGraphics {
         Screw = ImageIO.read(ScrewFile);
         Apple = ImageIO.read(AppleFile);
 
+
+
         for(String s: Inventory.myItems){
             //System.out.println(s+"ohasd");
             //g.drawImage(ImageIO.read(new File("dungeon game noah/src/"+s+".png")),800, 150, 100, 100,null );
         }
 
-        if(Map.btopLeft != null)displayItemsInTrashcan(g, Map.bbottomRight);
+        if(nearTrashcan.isNearBottomRight())displayItemsInTrashcan(g, Map.bbottomRight);
+        if(nearTrashcan.isNearTopRight())displayItemsInTrashcan(g, Map.btopRight);
+        if(nearTrashcan.isNearTopLeft())displayItemsInTrashcan(g, Map.btopLeft);
+
+
         drawItemsFromInventory(g);
         panel.repaint();
 
@@ -198,6 +207,7 @@ public class GameGraphics {
         backButton = ImageIO.read(backButtonFile);
         vicinity = ImageIO.read(vicinityFile);
         inventory = ImageIO.read(inventoryFile);
+        InventoryButton = ImageIO.read(InventoryButtonFile);
         g.setColor(new Color(61,93,46));
         g.fillRect(0,0, 1600, 1000);
         g.setColor(new Color(0,0,0));
@@ -233,6 +243,7 @@ public class GameGraphics {
         g.drawImage(inventory, 115, 635, 200, 100, null);
         g.drawImage(vicinity, 920, 18, 200,100, null);
         g.drawImage(prisoner, 275, 80, 200,200, null);
+        g.drawImage(InventoryButton, 1300, 650, 150,150,null);
 
             g2d.setColor(Color.WHITE);
         // Player Inventory
@@ -484,12 +495,18 @@ public class GameGraphics {
                     System.out.println("great");
                     panel.repaint();
                 }
+                if (e.getX() > 1329 && e.getX() < 1421 && e.getY() > 679 && e.getY() < 771){
+                    isInInventory = 0;
+                    panel.repaint();
+                }
 
-                System.out.println(Map.bbottomRight.getItem((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5)));
+                //System.out.println(Map.bbottomRight.getItem((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5)));
                 Map.bbottomRight.printItemsInBox();
                 Inventory.printItems();
-                itemMover((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5), Map.bbottomRight);
 
+                if(nearTrashcan.isNearBottomRight())itemMover((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5), Map.bbottomRight);
+                if(nearTrashcan.isNearTopRight())itemMover((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5), Map.btopRight);
+                if(nearTrashcan.isNearTopLeft())itemMover((int)Math.floor((e.getX()-900)/100) + ((int)Math.floor((e.getY()-120)/100)*5), Map.btopLeft);
             }
 
             @Override
@@ -666,7 +683,7 @@ public class GameGraphics {
 
     public void drawItemsFromInventory(Graphics g) throws IOException {
         for(int i =0; i < Inventory.myItems.size()-1; i++){
-            g.drawImage(itemToFile(Inventory.myItems.get((Inventory.myItems.size()-1)-i)), 105+(100*i),325,100,80,null);
+            g.drawImage(itemToFile(Inventory.myItems.get((Inventory.myItems.size()-1)-i)), 105+(100*(i%5)),325+(int)((i/5)*100),100,80,null);
         }
     }
 
