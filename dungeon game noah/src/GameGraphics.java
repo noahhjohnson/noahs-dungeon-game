@@ -63,6 +63,8 @@ public class GameGraphics {
     BufferedImage Paper;
     BufferedImage Apple;
     BufferedImage InventoryButton;
+    BufferedImage lockedDoor;
+    File lockedDoorFile = new File("dungeon game noah/src/lockedDoor.png");
     File InventoryButtonFile = new File("dungeon game noah/src/InventoryButton.png");
     File AppleFile = new File("dungeon game noah/src/Apple.png");
     File PaperFile = new File("dungeon game noah/src/Paper.png");
@@ -128,6 +130,7 @@ public class GameGraphics {
         Prisoner1 = ImageIO.read(Prisoner1File);
         Guard = ImageIO.read(GuardFile);
         Trashcan = ImageIO.read(TrashcanFile);
+        lockedDoor = ImageIO.read(lockedDoorFile);
 
 
         for (int i = 0; i < Map.mapRep.length; i++) {
@@ -160,6 +163,9 @@ public class GameGraphics {
                 }
                 if(Map.mapRep[j][i].equals("R ")) {
                     g.drawImage(Trashcan, j * blockSize, i * blockSize, blockSize, blockSize, null);
+                }
+                if(Map.mapRep[j][i].equals("L ")) {
+                    g.drawImage(lockedDoor, j * blockSize-35, i *blockSize-10, blockSize+69, blockSize+25, null);
                 }
             }
             g.drawImage(prisoner, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
