@@ -64,6 +64,8 @@ public class GameGraphics {
     BufferedImage Apple;
     BufferedImage InventoryButton;
     BufferedImage lockedDoor;
+    BufferedImage ventCover;
+    File ventCoverFile = new File("dungeon game noah/src/ventcover.png");
     File lockedDoorFile = new File("dungeon game noah/src/lockedDoor.png");
     File InventoryButtonFile = new File("dungeon game noah/src/InventoryButton.png");
     File AppleFile = new File("dungeon game noah/src/Apple.png");
@@ -107,6 +109,9 @@ public class GameGraphics {
     File CobbleBackFile = new File("dungeon game noah/src/CobbleBack.png");
 
     private String mainMenuSelector = "main menu";
+    public static boolean doorOnOff = true;
+    //True = Closed
+    //False = Open
 
     private int blockSize = 160;
     private int cellSize = 15;
@@ -131,6 +136,7 @@ public class GameGraphics {
         Guard = ImageIO.read(GuardFile);
         Trashcan = ImageIO.read(TrashcanFile);
         lockedDoor = ImageIO.read(lockedDoorFile);
+        ventCover = ImageIO.read(ventCoverFile);
 
 
         for (int i = 0; i < Map.mapRep.length; i++) {
@@ -164,14 +170,27 @@ public class GameGraphics {
                 if(Map.mapRep[j][i].equals("R ")) {
                     g.drawImage(Trashcan, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if(Map.mapRep[j][i].equals("L ")) {
+                if(Map.mapRep[j][i].equals("L ") && doorOnOff == true) {
                     g.drawImage(lockedDoor, j * blockSize-35, i *blockSize-10, blockSize+69, blockSize+25, null);
+                    //
                 }
             }
             g.drawImage(prisoner, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
         }
 
+        if(Map.map ==3){
+            g.drawImage(ventCover, 40, 600, 40,40,null);
+        }
+
+
+        if(doorOnOff == true && Map.map == 3){
+            g.setColor( new Color(0,0,0, 240));
+            g.fillRect(40,600,160,160);
+        }
+
     }
+
+
 
     public void drawInventoryItems(Graphics g) throws IOException {
         System.out.println("hello world! " + Main.p.x + Main.p.y);
@@ -638,6 +657,7 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_4){
                     BasicCommands.checkItemsNearMe(Main.p);
                      BasicCommands.interactInput("4", Main.p, Main.m);
+                     BasicCommands.interactInput("4", Main.p, Main.m);
 
 
                     isInteract = false;
@@ -706,6 +726,5 @@ public class GameGraphics {
         int secondValue = input % 6;
         System.out.println(firstValue + ", " + secondValue);
     }
-
 }
 
