@@ -117,6 +117,7 @@ public class GameGraphics {
     private int cellSize = 15;
 
     public boolean inventoryChecker = false;
+    public static boolean isInVentMenu = false;
 
     public GameGraphics() throws IOException, FontFormatException {
     }
@@ -369,6 +370,7 @@ public class GameGraphics {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
+
                     if(mainMenuSelector.equals("main menu")){
                         drawMainMenu(g);
                     }
@@ -466,6 +468,11 @@ public class GameGraphics {
                     System.out.println(isInInventory);
 
                 }
+
+                if(isInVentMenu) {
+                    drawVentMenu(g);
+                }
+
             }
 
         };
@@ -514,6 +521,11 @@ public class GameGraphics {
                 if (e.getX() > 43 && e.getX() < 104 && e.getY() > 759 && e.getY() < 821) {
                     System.out.println("Tutorial Back");
                     mainMenuSelector = "main menu";
+                    panel.repaint();
+                }
+                if (e.getX() > 1418 && e.getX() < 1480 && e.getY() > 619 && e.getY() < 678) {
+                    System.out.println("cat");
+                    isInVentMenu = false;
                     panel.repaint();
                 }
                 if (e.getX() > 903 && e.getX() < 1400 && e.getY() > 151 && e.getY() < 648) {
@@ -726,5 +738,18 @@ public class GameGraphics {
         int secondValue = input % 6;
         System.out.println(firstValue + ", " + secondValue);
     }
-}
 
+    public void drawVentMenu(Graphics g){
+        g.setColor(new Color(68,68,71,255));
+        g.fillRect(60,60,1475,650);
+        g.setColor(Color.white);
+        g.drawLine(300, 100, 300, 650);
+        g.drawLine(300,100,1300,100);
+        g.drawLine(1300, 100, 1300, 650);
+        g.drawLine(825, 100, 825, 650);
+        g.fillOval(250, 600, 100, 100);
+        g.fillOval(775, 600, 100, 100);
+        g.fillOval(1250, 600, 100,100);
+        g.drawImage(backButton, 1400, 600, 100, 100, null);
+    }
+}
