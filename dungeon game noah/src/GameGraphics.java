@@ -13,6 +13,7 @@ import java.util.Objects;
 
 public class GameGraphics {
 
+    public int areaChecker = 1;
     private boolean isInteract = false;
     public int isInInventory = 0;
     private boolean canInteract = false;
@@ -121,6 +122,13 @@ public class GameGraphics {
 
     public GameGraphics() throws IOException, FontFormatException {
     }
+
+    public void drawArea(Graphics g) throws IOException {
+        if (areaChecker == 1) { drawMap(g);
+        }
+    }
+
+
 
     public void drawMap(Graphics g) throws IOException {
         if (Map.map == 2) {
@@ -376,7 +384,7 @@ public class GameGraphics {
                     }
 
                     if(mainMenuSelector.equals("Play")){
-                        drawMap(g);
+                        drawArea(g);
                        if(isInteract){
                                //dialogueBox("hi", g);
                                System.out.println("");
@@ -674,7 +682,7 @@ public class GameGraphics {
 
                     isInteract = false;
                 }*/
-                if(e.getKeyCode() == KeyEvent.VK_M){
+                if(e.getKeyCode() == KeyEvent.VK_SHIFT){
                     mainMenuSelector = "Pause Menu";
                 }
 
@@ -749,7 +757,22 @@ public class GameGraphics {
         g.drawLine(825, 100, 825, 650);
         g.fillOval(250, 600, 100, 100);
         g.fillOval(775, 600, 100, 100);
-        g.fillOval(1250, 600, 100,100);
+        g.fillOval(1250, 600, 100, 100);
+        g.fillOval(250, 50, 100,100);
+
         g.drawImage(backButton, 1400, 600, 100, 100, null);
     }
+
+    /*
+    Create system where everything around character within a certain grid distance is lit up and everythiing outside of the grid value is dark.
+    (Transparency percentage)
+
+    UI Creation With Health + Stamina
+    Sprint feature and slow down character when moving
+    Better
+    Vent Buttons Set Area
+    Method for other areas
+
+     */
+
 }
