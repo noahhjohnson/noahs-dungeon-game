@@ -510,6 +510,41 @@ public class GameGraphics {
 
                 System.out.print("Y Position: ");
                 System.out.println(e.getY());
+                if (e.getX() > 1258 && e.getX() < 1341 && e.getY() > 611 && e.getY() < 688) {
+                    System.out.println("Play");
+                    mainMenuSelector = "Play";
+                    System.out.println(mainMenuSelector);
+                    areaChecker = 6;
+                    panel.repaint();
+                }
+                if (e.getX() > 1257 && e.getX() < 1346 && e.getY() > 57 && e.getY() < 141) {
+                    System.out.println("Play");
+                    mainMenuSelector = "Play";
+                    System.out.println(mainMenuSelector);
+                    areaChecker = 5;
+                    panel.repaint();
+                }
+                if (e.getX() > 779 && e.getX() < 879 && e.getY() > 611 && e.getY() < 686) {
+                    System.out.println("Play");
+                    mainMenuSelector = "Play";
+                    System.out.println(mainMenuSelector);
+                    areaChecker = 4;
+                    panel.repaint();
+                }
+                if (e.getX() > 789 && e.getX() < 867 && e.getY() > 59 && e.getY() < 133) {
+                    System.out.println("Play");
+                    mainMenuSelector = "Play";
+                    System.out.println(mainMenuSelector);
+                    areaChecker = 3;
+                    panel.repaint();
+                }
+                if (e.getX() > 250 && e.getX() < 350 && e.getY() > 57 && e.getY() < 145) {
+                    System.out.println("Play");
+                    mainMenuSelector = "Play";
+                    System.out.println(mainMenuSelector);
+                    areaChecker = 2;
+                    panel.repaint();
+                }
                 if (e.getX() > 450 && e.getX() < 1149 && e.getY() > 344 && e.getY() < 534) {
                     System.out.println("Play");
                     mainMenuSelector = "Play";
@@ -531,8 +566,8 @@ public class GameGraphics {
                     mainMenuSelector = "main menu";
                     panel.repaint();
                 }
-                if (e.getX() > 1418 && e.getX() < 1480 && e.getY() > 619 && e.getY() < 678) {
-                    System.out.println("cat");
+                if (e.getX() > 1428 && e.getX() < 1519 && e.getY() > 679 && e.getY() < 768) {
+                    System.out.println("Vent back");
                     isInVentMenu = false;
                     panel.repaint();
                 }
@@ -749,18 +784,37 @@ public class GameGraphics {
 
     public void drawVentMenu(Graphics g){
         g.setColor(new Color(68,68,71,255));
-        g.fillRect(60,60,1475,650);
+        g.fillRect(0,0,1720,880);
         g.setColor(Color.white);
         g.drawLine(300, 100, 300, 650);
         g.drawLine(300,100,1300,100);
         g.drawLine(1300, 100, 1300, 650);
         g.drawLine(825, 100, 825, 650);
+
         g.fillOval(250, 600, 100, 100);
         g.fillOval(775, 600, 100, 100);
         g.fillOval(1250, 600, 100, 100);
         g.fillOval(250, 50, 100,100);
+        g.fillOval(775,50,100,100);
+        g.fillOval(1250, 50, 100,100);
 
-        g.drawImage(backButton, 1400, 600, 100, 100, null);
+        if(areaChecker == 1){
+            g.setColor(Color.RED);
+            g.fillOval(250,600,100,100);
+        }
+        if(areaChecker == 2){
+            g.setColor(Color.RED);
+            g.fillOval(250,50,100,100);
+        }
+        if(areaChecker == 3){
+            g.setColor(Color.RED);
+            g.fillOval(775, 50,100,100);
+        }
+        if(areaChecker == 4){
+            g.setColor(Color.RED);
+            g.fillOval(775, 600, 100, 100);
+        }
+        g.drawImage(backButton, 1400, 650, 150, 150, null);
     }
 
     /*
@@ -768,8 +822,7 @@ public class GameGraphics {
     (Transparency percentage)
 
     UI Creation With Health + Stamina
-    Sprint feature and slow down character when moving
-    Better
+    Sprint feature and slow down character when moving better
     Vent Buttons Set Area
     Method for other areas
 
