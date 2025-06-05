@@ -1,12 +1,19 @@
 import java.io.IOException;
 
 public class Map{
+
     public static String [][] mapRep;
+    public static String[][] areaTwo;
+    public static String[][] currentMap = mapRep;
     public String day;
     public int hour;
     public static int map = 1;
     public static int offsetx;
     public static int offsety;
+
+    public static Box btopRight;
+    public static Box btopLeft;
+    public static Box bbottomRight;
 
     public static String hint1 = "Hint: Check the trashcans for items you can offer to the guard.";
 
@@ -99,6 +106,7 @@ public class Map{
         map++;
         p.x+=8;
         mapRep = new String[20][20];
+        currentMap = mapRep;
         for(int y = 0; y<=getWidth()-1;y++){
             for(int x = 0; x<=getLength()-1;x++){
                 if(x==0+8||x==12||y==0|| x==getWidth()-1|| y==4){
@@ -202,6 +210,7 @@ public class Map{
         map++;
         String[][] placeHolder = mapRep;
         mapRep = new String[40][40];
+        currentMap = mapRep;
         offsetx = 20;
         System.out.println(getLength()+" "+getWidth());
         for(int y = 0; y<=getLength()-1;y++){
@@ -226,6 +235,15 @@ public class Map{
             mapRep[i][19] = "W ";
             mapRep[i][39] = "W ";
         }
+        for(int i = 15; i<=19; i++){
+            mapRep[5][i] = "W ";
+        }
+        for(int i = 1; i<=5; i++){
+            mapRep[i][14] = "W ";
+        }
+
+        mapRep[3][14] = "L ";
+        mapRep[1][15] = "V ";
     }
 
     public static String[][] place2DArray(String[][] smallerArr, String[][] largerArr, int x, int y){
@@ -238,9 +256,9 @@ public class Map{
     }
     public static void emojiPlacerThree(){
 
-        Box btopRight = new Box(14,3);
-        Box btopLeft = new Box(5,3);
-        Box bbottomRight = new Box(15,14);
+        btopRight = new Box(14,3);
+        btopLeft = new Box(5,3);
+        bbottomRight = new Box(15, 14);
         mapRep[5][14] = "\ud83d\udc6e"; // Police Officer
         mapRep[11][19] = "\ud83d\udeaa"; // Door
         mapRep[4][14] = "\ud83d\udd11"; // Key
@@ -268,4 +286,22 @@ public class Map{
 
 
     }
+
+    public static void drawAreaTwo(Player p){
+        areaTwo = new String[5][5];
+        for(int y = 0; y<= areaTwo.length-1;y++){
+            for(int x = 0; x<=areaTwo[0].length-1;x++){
+                areaTwo[x][y] = ". ";
+                if(x == 0 || x == areaTwo[0].length-1 || y == 0 || y == areaTwo.length-1){
+                    areaTwo[x][y] = "W ";
+                }
+            }
+
+        }
+
+    }
+
+
+
+
 }
