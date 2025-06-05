@@ -288,12 +288,12 @@ public class Map{
     }
 
     public static void drawAreaTwo(Player p){
-        areaTwo = new String[5][5];
+        areaTwo = new String[7][6];
         for(int y = 0; y<= areaTwo.length-1;y++){
-            for(int x = 0; x<=areaTwo[0].length-1;x++){
-                areaTwo[x][y] = ". ";
-                if(x == 0 || x == areaTwo[0].length-1 || y == 0 || y == areaTwo.length-1){
-                    areaTwo[x][y] = "W ";
+            for(int x = 0; x<=areaTwo[y].length-1;x++){
+                areaTwo[y][x] = ". ";
+                if(x == 0 || x == areaTwo[y].length-1 || y == 0 || y == areaTwo.length-1){
+                    areaTwo[y][x] = "W ";
                 }
             }
 
