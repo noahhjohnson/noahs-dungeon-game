@@ -158,33 +158,32 @@ public class GameGraphics {
         }
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map.length; j++) {
-                if (map[j][i].equals("W ")) {
+                if (map[i][j].equals("W ")) {
                     g.drawImage(prisonWall, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[j][i].equals("\ud83d\udecf\ufe0f")) {
+                if (map[i][j].equals("\ud83d\udecf\ufe0f")) {
                     g.drawImage(bed, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[j][i].equals("\ud83d\udebf")) {
+                if (map[i][j].equals("\ud83d\udebf")) {
                     g.drawImage(sink, (j * blockSize), (i * blockSize), blockSize, blockSize, null);
                 }
-                if (map[j][i].equals("\uD83D\udeaa")) {
+                if (map[i][j].equals("\uD83D\udeaa")) {
                     g.drawImage(door, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[j][i].equals("T ")){
+                if (map[i][j].equals("T ")){
                     g.drawImage(Table, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[j][i].equals("\ud83d\ude4d")) {
+                if (map[i][j].equals("\ud83d\ude4d")) {
                     g.drawImage(Prisoner1, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[j][i].equals("\ud83d\udc6e")) {
+                if (map[i][j].equals("\ud83d\udc6e")) {
                     g.drawImage(Guard, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if(map[j][i].equals("R ")) {
+                if(map[i][j].equals("R ")) {
                     g.drawImage(Trashcan, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if(map[j][i].equals("L ") && doorOnOff == true) {
+                if(map[i][j].equals("L ") && doorOnOff == true) {
                     g.drawImage(lockedDoor, j * blockSize-35, i *blockSize-10, blockSize+69, blockSize+25, null);
-                    //
                 }
             }
             g.drawImage(prisoner, Main.p.x * blockSize, Main.p.y * blockSize, blockSize, blockSize, null);
@@ -548,6 +547,8 @@ public class GameGraphics {
                     mainMenuSelector = "Play";
                     System.out.println(mainMenuSelector);
                     areaChecker = 2;
+                    Main.p.x = 2;
+                    Main.p.y = 2;
                     Map.drawAreaTwo(Main.p);
                     Map.currentMap = Map.areaTwo;
                     panel.repaint();
