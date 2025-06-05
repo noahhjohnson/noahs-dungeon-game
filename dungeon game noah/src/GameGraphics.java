@@ -124,13 +124,16 @@ public class GameGraphics {
     }
 
     public void drawArea(Graphics g) throws IOException {
-        if (areaChecker == 1) { drawMap(g);
+        if (areaChecker == 1) { drawMap(g, Map.mapRep);
+        }
+        else if(areaChecker == 2){
+            drawMap(g, Map.areaTwo);
         }
     }
 
 
 
-    public void drawMap(Graphics g) throws IOException {
+    public void drawMap(Graphics g, String[][] map) throws IOException {
         if (Map.map == 2) {
             blockSize = 40;
         }
@@ -148,38 +151,38 @@ public class GameGraphics {
         ventCover = ImageIO.read(ventCoverFile);
 
 
-        for (int i = 0; i < Map.mapRep.length; i++) {
-            for (int j = 0; j < Map.mapRep.length; j++) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map.length; j++) {
                 g.drawImage(floor, j * blockSize, i * blockSize, blockSize, blockSize, null);
             }
         }
-        for (int i = 0; i < Map.mapRep.length; i++) {
-            for (int j = 0; j < Map.mapRep.length; j++) {
-                if (Map.mapRep[j][i].equals("W ")) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map.length; j++) {
+                if (map[j][i].equals("W ")) {
                     g.drawImage(prisonWall, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("\ud83d\udecf\ufe0f")) {
+                if (map[j][i].equals("\ud83d\udecf\ufe0f")) {
                     g.drawImage(bed, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("\ud83d\udebf")) {
+                if (map[j][i].equals("\ud83d\udebf")) {
                     g.drawImage(sink, (j * blockSize), (i * blockSize), blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("\uD83D\udeaa")) {
+                if (map[j][i].equals("\uD83D\udeaa")) {
                     g.drawImage(door, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("T ")){
+                if (map[j][i].equals("T ")){
                     g.drawImage(Table, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("\ud83d\ude4d")) {
+                if (map[j][i].equals("\ud83d\ude4d")) {
                     g.drawImage(Prisoner1, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (Map.mapRep[j][i].equals("\ud83d\udc6e")) {
+                if (map[j][i].equals("\ud83d\udc6e")) {
                     g.drawImage(Guard, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if(Map.mapRep[j][i].equals("R ")) {
+                if(map[j][i].equals("R ")) {
                     g.drawImage(Trashcan, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if(Map.mapRep[j][i].equals("L ") && doorOnOff == true) {
+                if(map[j][i].equals("L ") && doorOnOff == true) {
                     g.drawImage(lockedDoor, j * blockSize-35, i *blockSize-10, blockSize+69, blockSize+25, null);
                     //
                 }
@@ -196,6 +199,8 @@ public class GameGraphics {
             g.setColor( new Color(0,0,0, 240));
             g.fillRect(40,600,160,160);
         }
+
+
 
     }
 
@@ -543,6 +548,8 @@ public class GameGraphics {
                     mainMenuSelector = "Play";
                     System.out.println(mainMenuSelector);
                     areaChecker = 2;
+                    Map.drawAreaTwo(Main.p);
+                    Map.currentMap = Map.areaTwo;
                     panel.repaint();
                 }
                 if (e.getX() > 450 && e.getX() < 1149 && e.getY() > 344 && e.getY() < 534) {
@@ -632,7 +639,7 @@ public class GameGraphics {
             }
 
             private void handleOpeningInventory(int v, String s){
-                BasicCommands.checkItemsNearMe(Main.p);
+                BasicCommands.checkItemsNearMe(Main.p, Main.m.currentMap);
                 BasicCommands.interactInput(s, Main.p, Main.m);
                 if (BasicCommands.itemsNearMe.get(v).equals("\ud83d\ude4d") || BasicCommands.itemsNearMe.get(v).equals("\ud83d\udc6e")){
                     dialogueIsShowing = true;
@@ -646,22 +653,24 @@ public class GameGraphics {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     // Your logic for key pressed
-                    BasicCommands.movement("s", Main.p);
+                    System.out.println(Map.mapRep.length);
+                    System.out.println(Map.currentMap.length);
+                    BasicCommands.movement("s", Main.p, Map.currentMap);
                     dialogueIsShowing = false;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_W) {
                     // Your logic for key pressed
-                    BasicCommands.movement("w", Main.p);
+                    BasicCommands.movement("w", Main.p, Map.currentMap);
                     dialogueIsShowing = false;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_A) {
                     // Your logic for key pressed
-                    BasicCommands.movement("a", Main.p);
+                    BasicCommands.movement("a", Main.p, Map.currentMap);
                     dialogueIsShowing = false;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_D) {
                     // Your logic for key pressed
-                    BasicCommands.movement("d", Main.p);
+                    BasicCommands.movement("d", Main.p, Map.currentMap);
                     dialogueIsShowing = false;
                 }
 
@@ -670,7 +679,7 @@ public class GameGraphics {
                     //System.out.println("oahsds");
                     //isInteract = true;
                     // Your logic for key pressed
-                    BasicCommands.checkItemsNearMe(Main.p);
+                    BasicCommands.checkItemsNearMe(Main.p, Map.currentMap);
                     for(int i = 0; i < 4; i++){
                         System.out.print("["+i+"] ");
                         if(BasicCommands.itemsNearMe.size() == 0){
@@ -697,26 +706,6 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_4) {
                     handleOpeningInventory(3,"4");
                 }
-
-                /*if(isInteract && e.getKeyCode() == KeyEvent.VK_2){
-                    BasicCommands.checkItemsNearMe(Main.p);
-                    BasicCommands.interactInput("2", Main.p, Main.m);
-                    isInteract = false;
-                }
-                if(isInteract && e.getKeyCode() == KeyEvent.VK_3){
-                    BasicCommands.checkItemsNearMe(Main.p);
-                    char v = BasicCommands.interactInput("3", Main.p, Main.m);
-
-                    isInteract = false;
-                }
-                if(isInteract && e.getKeyCode() == KeyEvent.VK_4){
-                    BasicCommands.checkItemsNearMe(Main.p);
-                     BasicCommands.interactInput("4", Main.p, Main.m);
-                     BasicCommands.interactInput("4", Main.p, Main.m);
-
-
-                    isInteract = false;
-                }*/
                 if(e.getKeyCode() == KeyEvent.VK_SHIFT){
                     mainMenuSelector = "Pause Menu";
                 }
@@ -814,8 +803,17 @@ public class GameGraphics {
             g.setColor(Color.RED);
             g.fillOval(775, 600, 100, 100);
         }
+        if(areaChecker == 5){
+            g.setColor(Color.RED);
+            g.fillOval(1250, 50, 100,100);
+        }
+        if(areaChecker == 6){
+            g.setColor(Color.RED);
+            g.fillOval(1250, 600, 100, 100);
+        }
         g.drawImage(backButton, 1400, 650, 150, 150, null);
     }
+
 
     /*
     Create system where everything around character within a certain grid distance is lit up and everythiing outside of the grid value is dark.
