@@ -27,7 +27,9 @@ class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        m.createMapOne(); //Call create map one before we create level one
+        Inventory.myItems.add("apple");
+        m.createMapOne();
+        m.currentMap = m.mapRep;
         UI.start();
         levelOne();
 
