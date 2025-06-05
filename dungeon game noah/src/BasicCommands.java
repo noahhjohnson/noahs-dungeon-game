@@ -57,26 +57,26 @@ public class BasicCommands{
 
     }
 
-    public static void checkItemsNearMe(Player p){
+    public static void checkItemsNearMe(Player p, String [][] map){
         itemsNearMe.clear();
         for(int i=0; i<4; i++){
             itemsNearMe.add("");
         }
         //Up
-        if(!Map.mapRep[p.x][p.y-1].equals("W") && !Map.mapRep[p.x][p.y-1].equals(".") ){
-            itemsNearMe.set(0, Map.mapRep[p.x][p.y-1]);
+        if(!map[p.x][p.y-1].equals("W") && !map[p.x][p.y-1].equals(".") ){
+            itemsNearMe.set(0, map[p.x][p.y-1]);
 
         }
-        if(!Map.mapRep[p.x-1][p.y].equals("W") && !Map.mapRep[p.x-1][p.y].equals(".") ){
-            itemsNearMe.set(3, Map.mapRep[p.x-1][p.y]);
+        if(!map[p.x-1][p.y].equals("W") && !map[p.x-1][p.y].equals(".") ){
+            itemsNearMe.set(3, map[p.x-1][p.y]);
 
         }
-        if(!Map.mapRep[p.x][p.y+1].equals("W") && !Map.mapRep[p.x][p.y+1].equals(".") ){
-            itemsNearMe.set(2, Map.mapRep[p.x][p.y+1]);
+        if(!map[p.x][p.y+1].equals("W") && !map[p.x][p.y+1].equals(".") ){
+            itemsNearMe.set(2, map[p.x][p.y+1]);
 
         }
-        if(!Map.mapRep[p.x+1][p.y].equals("W") && !Map.mapRep[p.x+1][p.y].equals(".") ){
-            itemsNearMe.set(1, Map.mapRep[p.x+1][p.y]);
+        if(!map[p.x+1][p.y].equals("W") && !map[p.x+1][p.y].equals(".") ){
+            itemsNearMe.set(1, map[p.x+1][p.y]);
 
         }
         System.out.println(itemsNearMe);
@@ -100,7 +100,7 @@ public class BasicCommands{
 
         char inputChar = '_';
         if(i.equals("W") || i.equals("A") || i.equals("S") || i.equals("D")){
-            movement(i, p);
+            movement(i, p, m.currentMap);
             m.visual();
             System.out.println("w");
             return '_';
@@ -109,10 +109,8 @@ public class BasicCommands{
             inputInt = Integer.parseInt(i);
         }
 
-        //TODO Print out the location of the x and y cord. that we are interacting with
-        //Ex. If the player is on row 3, col 5 and if we type 2 for the right side, it needs to print out what is on that location (Trashcan or Pisoner)
-
-        getInteractCell(inputInt);
+        //getInteractCell(inputInt);
+        System.out.println("InteractCell "+ getInteractCell(inputInt, m.currentMap));
 
         if(itemsNearMe.get(inputInt-1).length()==0){
             return '-';
@@ -155,6 +153,21 @@ public class BasicCommands{
             System.out.println(italic()+"Game: This is a bed, you can sleep to regain health."+unitalic());
             p.health +=15;
         }
+
+        if (inputInt == 3 && p.x == 3 && p.y == 13) {
+            System.out.println("Open the door");
+            GameGraphics.doorOnOff = false;
+            m.currentMap[3][14] = ". ";
+        }
+
+        if (inputInt == 4 && p.x == 2 && p.y == 15 || inputInt == 1 && p.x == 1 && p.y == 16) {
+            System.out.println("This is a vent.");
+            GameGraphics.isInVentMenu = true;
+        }
+
+
+
+
 
         if((inputInt == 4 && p.x == 5 && p.y == 13) ||
                 (inputInt == 4 && p.x == 6 && p.y == 14) ||
@@ -283,55 +296,56 @@ public class BasicCommands{
         return inputChar;
     }
 
-    private static String getInteractCell(int i){
+    private static String getInteractCell(int i, String[][] map){
         if(i== 1){
-            System.out.println(Map.mapRep[Main.p.x][Main.p.y-1]);
-            return Map.mapRep[Main.p.x][Main.p.y-1];
+            System.out.println(map[Main.p.x][Main.p.y-1]);
+            return map[Main.p.x][Main.p.y-1];
         }
         if(i == 2){
-            System.out.println(Map.mapRep[Main.p.x+1][Main.p.y]);
-            return Map.mapRep[Main.p.x+1][Main.p.y];
+            System.out.println(map[Main.p.x+1][Main.p.y]);
+            return map[Main.p.x+1][Main.p.y];
         }
         if(i == 3){
-            System.out.println(Map.mapRep[Main.p.x-1][Main.p.y]);
-            return Map.mapRep[Main.p.x-1][Main.p.y];
+            System.out.println(map[Main.p.x-1][Main.p.y]);
+            return map[Main.p.x-1][Main.p.y];
         }
         if(i == 4){
-            System.out.println(Map.mapRep[Main.p.x-1][Main.p.y-1]);
-            return Map.mapRep[Main.p.x-1][Main.p.y-1];
+            System.out.println(map[Main.p.x-1][Main.p.y-1]);
+            return map[Main.p.x-1][Main.p.y-1];
         }
         return "";
     }
 
     public static boolean canMove = false;
-    public static void movement(String s, Player p){
+    public static void movement(String s, Player p, String[][] map){
+        System.out.println(map);
         if(!canMove) return;
         if(s.equals("W")||s.equals("w")){
-            if(checkUp(p)){
-                Map.mapRep[p.x][p.y]=". ";
+            if(checkUp(p, map)){
+                map[p.x][p.y]=". ";
                 p.y--;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
         }
         else if(s.equals("A")||s.equals("a") ){
-            if(checkLeft(p)){
-                Map.mapRep[p.x][p.y]=". ";
+            if(checkLeft(p, map)){
+                map[p.x][p.y]=". ";
                 p.x--;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
         }
         else if(s.equals("D")||s.equals("d") ){
-            if(checkRight(p)){
-                Map.mapRep[p.x][p.y]=". ";
+            if(checkRight(p, map)){
+                map[p.x][p.y]=". ";
                 p.x++;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
         }
         else if(s.equals("S")||s.equals("s") ){
-            if(checkDown(p)){
-                Map.mapRep[p.x][p.y]=". ";
+            if(checkDown(p, map)){
+                map[p.x][p.y]=". ";
                 p.y++;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,251);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,251);
             }
         }
         else if(s.length()>1){
@@ -339,48 +353,48 @@ public class BasicCommands{
             if(testing.length != 2) return;
             int steps = Integer.parseInt(testing[1]);
             if(testing[0].equals("W")){
-                Map.mapRep[p.x][p.y]=". ";
+                map[p.x][p.y]=". ";
                 int stepP = 0;
                 for(int i = p.y; i > p.y-steps; i--, stepP--){
-                    if(!Map.mapRep [p.x][i].equals(".")){
+                    if(!map [p.x][i].equals(".")){
                         break;
                     }
                 }
                 p.y+=stepP+1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
             if(testing[0].equals("A")){
-                Map.mapRep[p.x][p.y]=". ";
+                map[p.x][p.y]=". ";
                 int stepP = 0;
                 for(int i = p.x; i > p.x-steps; i--, stepP--){
-                    if(!Map.mapRep [i][p.y].equals(". ")){
+                    if(!map [i][p.y].equals(". ")){
                         break;
                     }
                 }
                 p.x+=stepP+1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
             if(testing[0].equals("S")){
-                Map.mapRep[p.x][p.y]=". ";
+                map[p.x][p.y]=". ";
                 int stepP = 0;
                 for(int i = p.y; i < p.y+steps; i++, stepP++){
-                    if(!Map.mapRep [p.x][i].equals(". ")){
+                    if(!map [p.x][i].equals(". ")){
                         break;
                     }
                 }
                 p.y+=stepP-1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
             if(testing[0].equals("D") || testing[0].equals("d")){
-                Map.mapRep[p.x][p.y]=". ";
+                map[p.x][p.y]=". ";
                 int stepP = 0;
                 for(int i = p.x; i < p.x+steps; i++, stepP++){
-                    if(!Map.mapRep [i][p.y].equals(". ")){
+                    if(!map [i][p.y].equals(". ")){
                         break;
                     }
                 }
                 p.x+=stepP-1;
-                Map.mapRep[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
             }
         }
 
@@ -396,26 +410,26 @@ public class BasicCommands{
         if(s.equals("E") || s.equals("e")){
         }
     }
-    public static boolean checkUp(Player p){
-        if(Map.mapRep[p.x][p.y-1].equals(". ")){
+    public static boolean checkUp(Player p, String [][] map){
+        if(map[p.x][p.y-1].equals(". ")){
             return true;
         }
         return false;
     }
-    public static boolean checkLeft(Player p){
-        if(Map.mapRep[p.x-1][p.y].equals(". ")){
+    public static boolean checkLeft(Player p, String[][] map){
+        if(map[p.x-1][p.y].equals(". ")){
             return true;
         }
         return false;
     }
-    public static boolean checkRight(Player p){
-        if(Map.mapRep[p.x+1][p.y].equals(". ")){
+    public static boolean checkRight(Player p, String[][] map){
+        if(map[p.x+1][p.y].equals(". ")){
             return true;
         }
         return false;
     }
-    public static boolean checkDown(Player p){
-        if(Map.mapRep[p.x][p.y+1].equals(". ")){
+    public static boolean checkDown(Player p, String [][] map){
+        if(map[p.x][p.y+1].equals(". ")){
             return true;
         }
         return false;
