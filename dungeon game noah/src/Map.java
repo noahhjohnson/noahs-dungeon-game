@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class Map{
@@ -56,7 +57,7 @@ public class Map{
         Main.clearScreen();
         for(int y = 0; y<= getLength()-1;y++){
             for(int x = 0; x<=getWidth()-1;x++){
-                System.out.print(mapRep[x][y]);
+                System.out.print(mapRep[y][x]);
 
             }
             if(y==0)System.out.print("  "+Main.p.x+" "+Main.p.y);
@@ -87,125 +88,87 @@ public class Map{
         for(int y = 0; y<=getLength()-1;y++){
             for(int x = 0; x<=getWidth()-1;x++){
                 if(x==0||y==0|| x==getWidth()-1|| y==getLength()-1){
-                    mapRep[x][y]="W ";
+                    mapRep[y][x]="W ";
                     if(x==2 && y==4){
-                        mapRep[x][y]=Main.colorString("D", 255,255,0);
+                        mapRep[y][x]= "D ";
                     }
                 }
-                else if(x==2 && y==2){
-                    mapRep[x][y]=Main.colorString("P ", 121,251,255);
-                }
-                else mapRep[x][y]=". ";
+                else mapRep[y][x]=". ";
             }
         }
-        emojiPlacerOne();
 
+        mapRep[2][2] = "P ";
+        mapRep[1][1] = "B ";
+        mapRep[1][3] = "S ";
 
     }
     public void createMapTwo(Player p){
         map++;
         p.x+=8;
-        mapRep = new String[20][20];
+        mapRep = new String[21][21];
         currentMap = mapRep;
-        for(int y = 0; y<=getWidth()-1;y++){
-            for(int x = 0; x<=getLength()-1;x++){
-                if(x==0+8||x==12||y==0|| x==getWidth()-1|| y==4){
-                    if(y<=4){
-                        mapRep[x][y]="W ";
-                    }
-                    else{
-                        mapRep[x][y] = ". ";
-                    }
-                    if(x==2+8 && y==4){
-                        mapRep[x][y]="D";
-                    }
-
+        for(int y = 0; y<=getWidth()-1;y++) {
+            for (int x = 0; x <= getLength() - 1; x++) {
+                if(x == 0 || y == 0 || y == getLength()-1 || x == getWidth()-1){
+                    mapRep[y][x] = "W ";
                 }
-                else if(x==1+8 && y==1){
-                    mapRep[x][y]="\ud83d\udecf\ufe0f";
+                else {
+                    mapRep[y][x] = ". ";
                 }
-                else if(x==3+8 && y==1){
-                    mapRep[x][y]=Main.colorString("S", 255,255,0);
+                if(y < 4 && (x == 8 || x == 12)){
+                    mapRep[y][x] = "W ";
                 }
-                else mapRep[x][y]=". ";
-                mapRep[10][4]=". ";
-                mapRep[p.x][p.y] =Main.colorString("P", 121,251,255);
-                for(int i=0; i<20; i++){
-                    mapRep[i][19] = "W ";
+                if(y == 4 && x != 10){
+                    mapRep[y][x] = "W ";
                 }
-                for(int i=0; i<20; i++){
-                    mapRep[19][i] = "W ";
-                    mapRep[0][i] = "W ";
-                }
-                if(x==5 && y==8){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==6 && y==8){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==4 && y==8){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==13 && y==8){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==15 && y==8){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==14 && y==8){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==14 && y==12){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==13 && y==12){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==15 && y==12){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==4 && y==12){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==5 && y==12){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==6 && y==12){
-                    mapRep[x][y] = "T ";
-                }
-                if(x==5 && y==7){
-                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
-                }
-                if(x==14 && y==7){
-                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
-                }
-                if(x==14 && y==11){
-                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
-                }
-                if(x==5 && y==11){
-                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
-                }
-                if(x==14 && y==13){
-                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
-                }
-                if(x==5 && y==13){
-                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
-                }
-                if(x==18 && y==5){
-                    mapRep[x][y] =Main.colorString("I ", 255,255,0);
-                }
-                if(x==2 && y==16){
-                    mapRep[x][y] =Main.colorString("G", 255,255,0);
-                }
-                if(x==17 && y==16){
-                    mapRep[x][y] =Main.colorString("G", 255,255,0);
-                }
-
-                mapRep[0][10]=Main.colorString("D", 255,255,0);
-                emojiPlacerTwo();
             }
         }
+        mapRep[1][11] = "S ";
+        mapRep[1][9] = "B ";
+
+        mapRep[8][4] = "T ";
+        mapRep[8][5] = "T ";
+        mapRep[8][6] = "T ";
+
+        mapRep[8][14] = "T ";
+        mapRep[8][15] = "T ";
+        mapRep[8][16] = "T ";
+
+        mapRep[14][4] = "T ";
+        mapRep[14][5] = "T ";
+        mapRep[14][6] = "T ";
+
+        mapRep[14][14] = "T ";
+        mapRep[14][15] = "T ";
+        mapRep[14][16] = "T ";
+
+        mapRep[5][19] = "P1";
+        mapRep[7][5] = "P1";
+        mapRep[7][15] = "P1";
+        mapRep[13][5] = "P1";
+        mapRep[13][15] = "P1";
+        mapRep[15][5] = "P1";
+        mapRep[15][15] = "P1";
+
+        mapRep[18][2] = "G ";
+        mapRep[18][18] = "G ";
+
     }
+
+    /*
+    mapRep[0][10] = "\ud83d\udeaa"; // Door
+    mapRep[11][1] = "\ud83d\udebf"; // Sink
+    mapRep[17][16] = "\ud83d\udc6e"; // Police Officer
+    mapRep[2][16] = "\ud83d\udc6e"; // Police Officer
+    mapRep[5][7] = "\ud83d\ude4d";  // Inmate
+    mapRep[14][7] = "\ud83d\ude4d"; // Inmate
+    mapRep[14][11] = "\ud83d\ude4d"; // Inmate
+    mapRep[14][13] = "\ud83d\ude4d"; // Inmate
+    mapRep[5][13] = "\ud83d\ude4d"; // Inmate
+    mapRep[5][11] = "\ud83d\ude4d"; // Inmate
+    mapRep[18][5] = "\ud83d\ude4d"; // Inmate
+    */
+
     public void createMapThree(Player p){
         map++;
         String[][] placeHolder = mapRep;
@@ -278,17 +241,11 @@ public class Map{
         mapRep[5][11] = "\ud83d\ude4d"; // Inmate
         mapRep[18][5] = "\ud83d\ude4d"; // Inmate
     }
-    public static void emojiPlacerOne(){
-
-        mapRep[2][4] = "\uD83D\udeaa"; // Door
-        mapRep[3][1] = "\ud83d\udebf"; // Sink
-        mapRep[1][1] = "\ud83d\udecf\ufe0f"; // Bed
-
-
-    }
 
     public static void drawAreaTwo(Player p){
         areaTwo = new String[7][6];
+        //Crate = ImageIO.read(CrateFile);
+        // Move drawAreaTwo to GameGraphics
         for(int y = 0; y<= areaTwo.length-1;y++){
             for(int x = 0; x<=areaTwo[y].length-1;x++){
                 areaTwo[y][x] = ". ";
