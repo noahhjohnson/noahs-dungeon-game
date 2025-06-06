@@ -298,20 +298,20 @@ public class BasicCommands{
 
     private static String getInteractCell(int i, String[][] map){
         if(i== 1){
-            System.out.println(map[Main.p.x][Main.p.y-1]);
-            return map[Main.p.x][Main.p.y-1];
+            System.out.println(map[Main.p.y-1][Main.p.x]);
+            return map[Main.p.y-1][Main.p.x];
         }
         if(i == 2){
-            System.out.println(map[Main.p.x+1][Main.p.y]);
-            return map[Main.p.x+1][Main.p.y];
+            System.out.println(map[Main.p.y][Main.p.x+1]);
+            return map[Main.p.y][Main.p.x+1];
         }
         if(i == 3){
-            System.out.println(map[Main.p.x-1][Main.p.y]);
-            return map[Main.p.x-1][Main.p.y];
+            System.out.println(map[Main.p.y][Main.p.x-1]);
+            return map[Main.p.y][Main.p.x-1];
         }
         if(i == 4){
-            System.out.println(map[Main.p.x-1][Main.p.y-1]);
-            return map[Main.p.x-1][Main.p.y-1];
+            System.out.println(map[Main.p.y-1][Main.p.x-1]);
+            return map[Main.p.y-1][Main.p.x-1];
         }
         return "";
     }
@@ -322,30 +322,30 @@ public class BasicCommands{
         if(!canMove) return;
         if(s.equals("W")||s.equals("w")){
             if(checkUp(p, map)){
-                map[p.x][p.y]=". ";
+                map[p.y][p.x]=". ";
                 p.y--;
-                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.y][p.x] = "P ";
             }
         }
         else if(s.equals("A")||s.equals("a") ){
             if(checkLeft(p, map)){
-                map[p.x][p.y]=". ";
+                map[p.y][p.x]=". ";
                 p.x--;
-                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.y][p.x] = "P ";
             }
         }
         else if(s.equals("D")||s.equals("d") ){
             if(checkRight(p, map)){
-                map[p.x][p.y]=". ";
+                map[p.y][p.x]=". ";
                 p.x++;
-                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.y][p.x] = "P ";
             }
         }
         else if(s.equals("S")||s.equals("s") ){
             if(checkDown(p, map)){
-                map[p.x][p.y]=". ";
+                map[p.y][p.x]=". ";
                 p.y++;
-                map[p.x][p.y]=Main.colorString("P ", 121,251,251);
+                map[p.y][p.x] = "P ";
             }
         }
         else if(s.length()>1){
@@ -353,18 +353,18 @@ public class BasicCommands{
             if(testing.length != 2) return;
             int steps = Integer.parseInt(testing[1]);
             if(testing[0].equals("W")){
-                map[p.x][p.y]=". ";
+                map[p.y][p.x]=". ";
                 int stepP = 0;
                 for(int i = p.y; i > p.y-steps; i--, stepP--){
-                    if(!map [p.x][i].equals(".")){
+                    if(!map [i][p.x].equals(".")){
                         break;
                     }
                 }
                 p.y+=stepP+1;
-                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.y][p.x]="P ";
             }
             if(testing[0].equals("A")){
-                map[p.x][p.y]=". ";
+                map[p.y][p.x]=". ";
                 int stepP = 0;
                 for(int i = p.x; i > p.x-steps; i--, stepP--){
                     if(!map [i][p.y].equals(". ")){
@@ -372,13 +372,13 @@ public class BasicCommands{
                     }
                 }
                 p.x+=stepP+1;
-                map[p.x][p.y]=Main.colorString("P ", 121,251,255);
+                map[p.y][p.x] = "P ";
             }
             if(testing[0].equals("S")){
-                map[p.x][p.y]=". ";
+                map[p.y][p.x]=". ";
                 int stepP = 0;
                 for(int i = p.y; i < p.y+steps; i++, stepP++){
-                    if(!map [p.x][i].equals(". ")){
+                    if(!map [i][p.x].equals(". ")){
                         break;
                     }
                 }
@@ -411,25 +411,25 @@ public class BasicCommands{
         }
     }
     public static boolean checkUp(Player p, String [][] map){
-        if(map[p.x][p.y-1].equals(". ")){
+        if(map[p.y-1][p.x].equals(". ")){
             return true;
         }
         return false;
     }
     public static boolean checkLeft(Player p, String[][] map){
-        if(map[p.x-1][p.y].equals(". ")){
+        if(map[p.y][p.x-1].equals(". ")){
             return true;
         }
         return false;
     }
     public static boolean checkRight(Player p, String[][] map){
-        if(map[p.x+1][p.y].equals(". ")){
+        if(map[p.y][p.x+1].equals(". ")){
             return true;
         }
         return false;
     }
     public static boolean checkDown(Player p, String [][] map){
-        if(map[p.x][p.y+1].equals(". ")){
+        if(map[p.y+1][p.x].equals(". ")){
             return true;
         }
         return false;
