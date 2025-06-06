@@ -66,6 +66,8 @@ public class GameGraphics {
     BufferedImage InventoryButton;
     BufferedImage lockedDoor;
     BufferedImage ventCover;
+    BufferedImage Crate;
+    File CrateFile = new File("dungeon game noah/src/Crate.png");
     File ventCoverFile = new File("dungeon game noah/src/ventcover.png");
     File lockedDoorFile = new File("dungeon game noah/src/lockedDoor.png");
     File InventoryButtonFile = new File("dungeon game noah/src/InventoryButton.png");
@@ -161,22 +163,22 @@ public class GameGraphics {
                 if (map[i][j].equals("W ")) {
                     g.drawImage(prisonWall, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[i][j].equals("\ud83d\udecf\ufe0f")) {
+                if (map[i][j].equals("B ")) {
                     g.drawImage(bed, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[i][j].equals("\ud83d\udebf")) {
+                if (map[i][j].equals("S ")) {
                     g.drawImage(sink, (j * blockSize), (i * blockSize), blockSize, blockSize, null);
                 }
-                if (map[i][j].equals("\uD83D\udeaa")) {
+                if (map[i][j].equals("D ")) {
                     g.drawImage(door, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
                 if (map[i][j].equals("T ")){
                     g.drawImage(Table, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[i][j].equals("\ud83d\ude4d")) {
+                if (map[i][j].equals("P1")) {
                     g.drawImage(Prisoner1, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
-                if (map[i][j].equals("\ud83d\udc6e")) {
+                if (map[i][j].equals("G ")) {
                     g.drawImage(Guard, j * blockSize, i * blockSize, blockSize, blockSize, null);
                 }
                 if(map[i][j].equals("R ")) {
@@ -707,7 +709,7 @@ public class GameGraphics {
                 if(isInteract && e.getKeyCode() == KeyEvent.VK_4) {
                     handleOpeningInventory(3,"4");
                 }
-                if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
                     mainMenuSelector = "Pause Menu";
                 }
 
